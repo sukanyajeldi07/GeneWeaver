@@ -1,0 +1,45 @@
+GENEWEAVER - CPU vs GPU BENCHMARK REPORT
+
+Hardware:
+GPU: Intel(R) UHD Graphics
+
+Algorithm:
+Needleman-Wunsch Global Sequence Alignment
+
+Scoring:
+Match: +2
+Mismatch: -1
+Gap: -2
+
+Updated Benchmark Results:
+
+DNA Length: 8
+CPU: 0.055500 ms
+GPU: 140.920600 ms
+Validation: PASS
+
+DNA Length: 32
+CPU: 0.473000 ms
+GPU: 12.102400 ms
+Validation: PASS
+
+DNA Length: 64
+CPU: 1.820600 ms
+GPU: 15.797500 ms
+Validation: PASS
+
+DNA Length: 128
+CPU: 3.589900 ms
+GPU: 49.955000 ms
+Validation: PASS
+
+Total Tests: 4
+Successful Tests: 4
+Failed Tests: 0
+
+Conclusion:
+CPU and GPU implementations produced matching alignment results for all four tested sequence lengths.
+
+The CPU was faster in all tested cases. GPU execution includes OpenCL overhead, including device interaction and kernel-launch costs.
+
+Further optimization and benchmarking with larger DNA sequences are required to evaluate GPU performance at scale.
