@@ -775,7 +775,8 @@ async function runAlignment() {
   }
 }
 
-// GPU STATUS
+
+ // GPU STATUS
 
 async function checkGPUStatus() {
   try {
@@ -783,22 +784,27 @@ async function checkGPUStatus() {
 
     const header = document.getElementById("headerStatus");
     const gpuDevice = document.getElementById("gpuDevice");
+    const progressText = document.getElementById("progressText");
 
-    if (data.available && data.devices && data.devices.length > 0) {
-      const deviceNames = data.devices.map(device => device.name).join(", ");
+    header.textContent = "● PYTHON BACKEND ONLINE";
+    header.className = "status";
 
-      header.textContent = "● PYTHON BACKEND ONLINE";
-      header.className = "status";
+    if (data.available === true) {
+      const deviceNames = Array.isArray(data.devices)
+        ? data.devices.map(device => device.name || device).join(", ")
+        : (data.device || "GPU detected");
 
       gpuDevice.textContent = deviceNames;
       gpuDevice.className = "good";
 
-      document.getElementById("progressText").textContent =
-        "GPU detected: " + deviceNames;
+      progressText.textContent = "GPU detected: " + deviceNames;
+
     } else {
-      header.textContent = "● BACKEND ONLINE - GPU UNAVAILABLE";
-      gpuDevice.textContent = "Not available";
-      gpuDevice.className = "bad";
+      gpuDevice.textContent = "CPU Fallback";
+      gpuDevice.className = "good";
+
+      progressText.textContent =
+        data.device || "GPU unavailable. CPU processing is active.";
     }
 
   } catch (error) {
@@ -809,6 +815,8 @@ async function checkGPUStatus() {
     document.getElementById("progressText").textContent = error.message;
   }
 }
+
+
 
 // GPU ALIGNMENT
 
