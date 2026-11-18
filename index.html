@@ -103,6 +103,11 @@ h2 {
   margin:0 0 18px;
 }
 
+h3 {
+  font-size:15px;
+  margin:5px 0 15px;
+}
+
 label {
   display:block;
   color:var(--muted);
@@ -140,6 +145,11 @@ button {
 }
 
 button:hover { opacity:.85; }
+
+button:disabled {
+  opacity:.55;
+  cursor:not-allowed;
+}
 
 .secondary {
   background:var(--panel2);
@@ -202,6 +212,94 @@ footer {
   font-size:12px;
 }
 
+/* BENCHMARK CHART */
+
+.benchmark-chart {
+  display:flex;
+  flex-direction:column;
+  gap:22px;
+  margin-top:15px;
+}
+
+.benchmark-group {
+  padding-bottom:15px;
+  border-bottom:1px solid var(--line);
+}
+
+.benchmark-heading {
+  color:var(--cyan);
+  font-weight:bold;
+  font-size:13px;
+  margin-bottom:12px;
+}
+
+.bar-label {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-size:12px;
+  margin:9px 0 5px;
+}
+
+.bar-track {
+  width:100%;
+  height:13px;
+  background:#26364c;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.bar-fill {
+  height:100%;
+  min-width:2px;
+  border-radius:20px;
+  transition:width .5s;
+}
+
+.cpu-bar { background:var(--green); }
+.gpu-bar { background:#35a7ff; }
+
+.chart-legend {
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  margin-top:15px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.legend-dot {
+  display:inline-block;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  margin-right:6px;
+}
+
+.benchmark-table {
+  width:100%;
+  border-collapse:collapse;
+  text-align:left;
+  font-size:13px;
+}
+
+.benchmark-table th,
+.benchmark-table td {
+  padding:12px 10px;
+  border-bottom:1px solid var(--line);
+}
+
+.benchmark-table th {
+  color:var(--cyan);
+}
+
+.benchmark-note {
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+  margin-top:15px;
+}
+
 @media(max-width:850px) {
   .grid { grid-template-columns:repeat(2,1fr); }
   .layout { grid-template-columns:1fr; }
@@ -210,6 +308,9 @@ footer {
 @media(max-width:480px) {
   .grid { grid-template-columns:1fr; }
   .hero h1 { font-size:24px; }
+  .benchmark-table { font-size:11px; }
+  .benchmark-table th,
+  .benchmark-table td { padding:9px 5px; }
 }
 </style>
 </head>
@@ -387,6 +488,87 @@ footer {
 
 </div>
 </div>
+
+<!-- 07 CPU VS GPU BENCHMARK -->
+<section class="panel" id="benchmarkSection">
+  <h2>07 / CPU vs GPU Performance Benchmark</h2>
+
+  <p class="muted">
+    Needleman-Wunsch Algorithm | Local Intel OpenCL GPU
+  </p>
+
+  <button id="benchmarkButton" onclick="runBenchmark()">
+    Run Benchmark
+  </button>
+
+  <div class="grid" style="margin-top:18px">
+
+    <div class="card">
+      <small>Successful Tests</small>
+      <div class="metric" id="benchmarkPassed">--</div>
+    </div>
+
+    <div class="card">
+      <small>GPU Initialization</small>
+      <div class="metric" id="gpuInitTime">--</div>
+    </div>
+
+    <div class="card">
+      <small>GPU Device</small>
+      <div class="metric" style="font-size:13px" id="benchmarkDevice">--</div>
+    </div>
+
+    <div class="card">
+      <small>Benchmark Status</small>
+      <div class="metric" style="font-size:17px" id="benchmarkStatus">WAITING</div>
+    </div>
+
+  </div>
+
+  <div class="result" style="margin-top:18px">
+    <h3>CPU vs GPU Execution Time</h3>
+
+    <div class="chart-legend">
+      <span>
+        <span class="legend-dot" style="background:#36e6a0"></span>
+        CPU execution time
+      </span>
+      <span>
+        <span class="legend-dot" style="background:#35a7ff"></span>
+        GPU execution time
+      </span>
+    </div>
+
+    <div id="benchmarkChart" class="benchmark-chart">
+      Click Run Benchmark to load actual results.
+    </div>
+  </div>
+
+  <div style="overflow-x:auto;margin-top:20px">
+    <table class="benchmark-table">
+      <thead>
+        <tr>
+          <th>DNA Length</th>
+          <th>CPU (ms)</th>
+          <th>GPU (ms)</th>
+          <th>Validation</th>
+        </tr>
+      </thead>
+
+      <tbody id="benchmarkRows">
+        <tr>
+          <td colspan="4">No benchmark results loaded.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="benchmark-note" id="benchmarkConclusion">
+    Benchmark results have not been loaded yet.
+  </div>
+
+</section>
+
 </main>
 
 <footer>
@@ -395,17 +577,23 @@ footer {
 </footer>
 
 <script>
+
 const API = "";
+
+// PROGRESS MONITOR
 
 function setProgress(value, message) {
   document.getElementById("progressBar").style.width = value + "%";
   document.getElementById("progressText").textContent = message;
 }
 
+// API REQUEST
+
 async function apiRequest(endpoint, options = {}) {
   const response = await fetch(API + endpoint, options);
 
   let data;
+
   try {
     data = await response.json();
   } catch {
@@ -413,7 +601,9 @@ async function apiRequest(endpoint, options = {}) {
   }
 
   if (!response.ok || data.success === false) {
-    throw new Error(data.message || "Backend request failed.");
+    throw new Error(
+      data.error || data.message || "Backend request failed."
+    );
   }
 
   return data;
@@ -572,7 +762,7 @@ async function runAlignment() {
       "Sequence 1: " + data.aligned_sequence1 + "\n" +
       "Sequence 2: " + data.aligned_sequence2 + "\n" +
       "Alignment score: " + data.alignment_score + "\n" +
-      "Backend: " + data.backend;
+      "Backend: " + (data.backend || "Python CPU");
 
     showResult(output, report);
     updateProcessingTime(data);
@@ -649,7 +839,7 @@ async function runGPUAlignment() {
       "GPU GLOBAL ALIGNMENT\n" +
       "Sequence 1: " + data.aligned_sequence1 + "\n" +
       "Sequence 2: " + data.aligned_sequence2 + "\n" +
-      "Alignment score: " + data.alignment_score+ "\n" +
+      "Alignment score: " + data.alignment_score + "\n" +
       "GPU device: " + data.device + "\n" +
       "Backend: " + data.backend + "\n" +
       "Traceback: " + data.traceback;
@@ -665,9 +855,197 @@ async function runGPUAlignment() {
   }
 }
 
+// 07 - CPU VS GPU BENCHMARK
+
+async function runBenchmark() {
+
+  const button = document.getElementById("benchmarkButton");
+  const status = document.getElementById("benchmarkStatus");
+  const passed = document.getElementById("benchmarkPassed");
+  const initTime = document.getElementById("gpuInitTime");
+  const device = document.getElementById("benchmarkDevice");
+  const chart = document.getElementById("benchmarkChart");
+  const rows = document.getElementById("benchmarkRows");
+  const conclusion = document.getElementById("benchmarkConclusion");
+
+  button.disabled = true;
+  button.textContent = "Running Benchmark...";
+  status.textContent = "RUNNING";
+  status.style.color = "var(--cyan)";
+
+  chart.textContent = "Connecting to Python benchmark API...";
+  rows.innerHTML = "";
+  conclusion.textContent = "Running CPU and GPU comparisons...";
+
+  setProgress(20, "Starting CPU vs GPU benchmark...");
+
+  try {
+
+    const data = await apiRequest("/api/benchmark");
+
+    if (!Array.isArray(data.results) || data.results.length === 0) {
+      throw new Error("Benchmark returned no results.");
+    }
+
+    passed.textContent =
+      data.successful_tests + "/" + data.total_tests;
+
+    initTime.textContent =
+      Number(data.gpu_initialization_ms).toFixed(2) + " ms";
+
+    device.textContent = data.gpu_device || "Unavailable";
+
+    status.textContent =
+      data.failed_tests === 0 ? "ALL PASSED" : "CHECK RESULTS";
+
+    status.style.color =
+      data.failed_tests === 0 ? "var(--green)" : "var(--red)";
+
+    // BUILD RESULTS TABLE
+
+    rows.innerHTML = "";
+
+    data.results.forEach(result => {
+
+      const row = document.createElement("tr");
+
+      const values = [
+        result.sequence_length,
+        Number(result.cpu_time_ms).toFixed(4),
+        Number(result.gpu_time_ms).toFixed(4),
+        result.validation
+      ];
+
+      values.forEach((value, index) => {
+
+        const cell = document.createElement("td");
+        cell.textContent = value;
+
+        if (index === 3) {
+          cell.className =
+            result.validation === "PASS" ? "good" : "bad";
+        }
+
+        row.appendChild(cell);
+      });
+
+      rows.appendChild(row);
+    });
+
+    // BUILD COMPARISON CHART
+
+    chart.innerHTML = "";
+
+    data.results.forEach(result => {
+
+      const cpu = Number(result.cpu_time_ms);
+      const gpu = Number(result.gpu_time_ms);
+      const maximum = Math.max(cpu, gpu, 0.001);
+
+      const group = document.createElement("div");
+      group.className = "benchmark-group";
+
+      const heading = document.createElement("div");
+      heading.className = "benchmark-heading";
+      heading.textContent =
+        "DNA Sequence Length: " + result.sequence_length;
+
+      group.appendChild(heading);
+
+      const barItems = [
+        { label: "CPU", value: cpu, className: "cpu-bar" },
+        { label: "GPU", value: gpu, className: "gpu-bar" }
+      ];
+
+      barItems.forEach(item => {
+
+        const label = document.createElement("div");
+        label.className = "bar-label";
+
+        const name = document.createElement("span");
+        name.textContent = item.label;
+
+        const value = document.createElement("span");
+        value.textContent = item.value.toFixed(4) + " ms";
+
+        label.appendChild(name);
+        label.appendChild(value);
+
+        const track = document.createElement("div");
+        track.className = "bar-track";
+
+        const bar = document.createElement("div");
+        bar.className = "bar-fill " + item.className;
+
+        bar.style.width =
+          Math.max(1, item.value / maximum * 100) + "%";
+
+        track.appendChild(bar);
+
+        group.appendChild(label);
+        group.appendChild(track);
+      });
+
+      chart.appendChild(group);
+    });
+
+    // PERFORMANCE SUMMARY
+
+    const cpuFaster = data.results.filter(
+      result =>
+        Number(result.cpu_time_ms) < Number(result.gpu_time_ms)
+    ).length;
+
+    let summary =
+      "BENCHMARK SUMMARY\n" +
+      "Algorithm: " + data.algorithm + "\n" +
+      "GPU device: " + data.gpu_device + "\n" +
+      "Successful tests: " + data.successful_tests + "/" +
+      data.total_tests + "\n" +
+      "Repetitions per sequence size: " + data.repetitions + "\n";
+
+    if (cpuFaster === data.results.length) {
+      summary +=
+        "CPU was faster in all tested sequence sizes.\n" +
+        "OpenCL execution overhead affects these smaller workloads.";
+    } else {
+      summary +=
+        "Performance varies across sequence sizes. " +
+        "Review the measured results above.";
+    }
+
+    conclusion.textContent = summary;
+
+    setProgress(100, "CPU vs GPU benchmark completed successfully");
+
+  } catch (error) {
+
+    status.textContent = "FAILED";
+    status.style.color = "var(--red)";
+
+    chart.textContent = error.message;
+    conclusion.textContent =
+      "Benchmark could not be completed. Check that the Flask backend is running.";
+
+    showError(
+      document.getElementById("benchmarkConclusion"),
+      error.message
+    );
+
+    setProgress(0, "Benchmark failed");
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = "Run Benchmark";
+
+  }
+}
+
 // CLEAR RESULTS
 
 function clearResults() {
+
   document.getElementById("sequence").value = "";
 
   showResult(
@@ -691,8 +1069,8 @@ function clearResults() {
 document.addEventListener("DOMContentLoaded", function() {
   checkGPUStatus();
 });
+
 </script>
 
 </body>
 </html>
-
