@@ -2,11 +2,15 @@
 # GeneWeaver - DNA Sequence Alignment
 # Needleman-Wunsch Global Alignment Algorithm
 
+
 def needleman_wunsch(seq1, seq2):
 
     match = 2
     mismatch = -1
     gap = -2
+
+    seq1 = seq1.upper()
+    seq2 = seq2.upper()
 
     rows = len(seq1) + 1
     cols = len(seq2) + 1
@@ -45,35 +49,37 @@ def needleman_wunsch(seq1, seq2):
     while i > 0 or j > 0:
 
         if i > 0 and j > 0:
-            score = match if seq1[i-1] == seq2[j-1] else mismatch
+            score = match if seq1[i - 1] == seq2[j - 1] else mismatch
 
-            if matrix[i][j] == matrix[i-1][j-1] + score:
-                aligned1 = seq1[i-1] + aligned1
-                aligned2 = seq2[j-1] + aligned2
+            if matrix[i][j] == matrix[i - 1][j - 1] + score:
+                aligned1 = seq1[i - 1] + aligned1
+                aligned2 = seq2[j - 1] + aligned2
                 i -= 1
                 j -= 1
                 continue
 
-        if i > 0 and matrix[i][j] == matrix[i-1][j] + gap:
-            aligned1 = seq1[i-1] + aligned1
+        if i > 0 and matrix[i][j] == matrix[i - 1][j] + gap:
+            aligned1 = seq1[i - 1] + aligned1
             aligned2 = "-" + aligned2
             i -= 1
         else:
             aligned1 = "-" + aligned1
-            aligned2 = seq2[j-1] + aligned2
+            aligned2 = seq2[j - 1] + aligned2
             j -= 1
 
     return aligned1, aligned2, matrix[-1][-1]
 
 
-# Test alignment
-sequence1 = "ATGCGT"
-sequence2 = "ATGCAT"
+# Demo runs only when this file is executed directly
+if __name__ == "__main__":
 
-a, b, score = needleman_wunsch(sequence1, sequence2)
+    sequence1 = "ATGCGT"
+    sequence2 = "ATGCAT"
 
-print("\nGeneWeaver - DNA Alignment")
-print("--------------------------")
-print("Sequence 1:", a)
-print("Sequence 2:", b)
-print("Alignment Score:", score)
+    a, b, score = needleman_wunsch(sequence1, sequence2)
+
+    print("\nGeneWeaver - DNA Alignment")
+    print("--------------------------")
+    print("Sequence 1:", a)
+    print("Sequence 2:", b)
+    print("Alignment Score:", score)

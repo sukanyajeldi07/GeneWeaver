@@ -2,7 +2,9 @@
 # GeneWeaver - SpCas9 PAM Detection
 # Detects NGG motifs in a DNA sequence
 
+
 def find_pam_sites(dna_sequence):
+    """Detect SpCas9 NGG PAM sites in a DNA sequence."""
 
     dna_sequence = dna_sequence.upper()
 
@@ -29,24 +31,26 @@ def find_pam_sites(dna_sequence):
     return pam_sites
 
 
-# Sample DNA
-dna = "ATGCGTACGGTAGCTAGG"
+# Sample test runs only when this file is executed directly.
+if __name__ == "__main__":
 
-results = find_pam_sites(dna)
+    dna = "ATGCGTACGGTAGCTAGG"
 
-print("\nGeneWeaver - PAM Detection")
-print("-------------------------")
-print("DNA Sequence:", dna)
+    results = find_pam_sites(dna)
 
-if isinstance(results, list):
+    print("\nGeneWeaver - PAM Detection")
+    print("-------------------------")
+    print("DNA Sequence:", dna)
 
-    for site in results:
-        print(
-            "PAM:", site["pam"],
-            "| Position:", site["position"]
-        )
+    if isinstance(results, list):
 
-    print("Total PAM sites:", len(results))
+        for site in results:
+            print(
+                "PAM:", site["pam"],
+                "| Position:", site["position"]
+            )
 
-else:
-    print("Error:", results)
+        print("Total PAM sites:", len(results))
+
+    else:
+        print("Error:", results)

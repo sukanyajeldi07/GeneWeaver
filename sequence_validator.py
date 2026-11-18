@@ -1,7 +1,9 @@
 
 # GeneWeaver - DNA Sequence Validator
 
+
 def validate_dna(sequence):
+    """Validate a DNA sequence containing only A, T, G and C."""
 
     sequence = sequence.upper()
 
@@ -17,30 +19,31 @@ def validate_dna(sequence):
     return True, "DNA sequence is valid"
 
 
-
 # Test multiple DNA sequences
+# These tests run only when this file is executed directly.
 
-test_sequences = [
-    "ATGCGTACGTAG",
-    "ATGCXYZ",
-    "ATG123",
-    "",
-    "atgcgt"
-]
+if __name__ == "__main__":
 
-print("\nGeneWeaver - DNA Validation Tests")
-print("---------------------------------")
+    test_sequences = [
+        "ATGCGTACGTAG",
+        "ATGCXYZ",
+        "ATG123",
+        "",
+        "atgcgt"
+    ]
 
-for sequence in test_sequences:
+    print("\nGeneWeaver - DNA Validation Tests")
+    print("---------------------------------")
 
-    is_valid, message = validate_dna(sequence)
+    for sequence in test_sequences:
 
-    print("\nSequence:", sequence)
+        is_valid, message = validate_dna(sequence)
 
-    if is_valid:
-        print("Result: VALID")
-    else:
-        print("Result: INVALID")
+        print("\nSequence:", sequence)
 
-    print("Message:", message)
+        if is_valid:
+            print("Result: VALID")
+        else:
+            print("Result: INVALID")
 
+        print("Message:", message)

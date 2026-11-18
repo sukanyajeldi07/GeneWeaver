@@ -1,7 +1,9 @@
 
 # GeneWeaver - CRISPR Guide Matching
 
+
 def find_guide_matches(dna_sequence, guide_sequence):
+    """Find exact occurrences of a CRISPR guide in a DNA sequence."""
 
     dna_sequence = dna_sequence.upper()
     guide_sequence = guide_sequence.upper()
@@ -31,24 +33,26 @@ def find_guide_matches(dna_sequence, guide_sequence):
     return matches
 
 
-# Sample test
-dna = "ATGCGTACGTAGCTAG"
-guide = "CGTA"
+# Sample test runs only when this file is executed directly.
+if __name__ == "__main__":
 
-result = find_guide_matches(dna, guide)
+    dna = "ATGCGTACGTAGCTAG"
+    guide = "CGTA"
 
-print("\nGeneWeaver - CRISPR Guide Matching")
-print("----------------------------------")
-print("DNA Sequence:", dna)
-print("Guide Sequence:", guide)
+    result = find_guide_matches(dna, guide)
 
-if isinstance(result, list):
+    print("\nGeneWeaver - CRISPR Guide Matching")
+    print("----------------------------------")
+    print("DNA Sequence:", dna)
+    print("Guide Sequence:", guide)
 
-    if result:
-        print("Matching positions (0-based):", result)
-        print("Total matches:", len(result))
+    if isinstance(result, list):
+
+        if result:
+            print("Matching positions (0-based):", result)
+            print("Total matches:", len(result))
+        else:
+            print("No exact matches found")
+
     else:
-        print("No exact matches found")
-
-else:
-    print("Error:", result)
+        print("Error:", result)
