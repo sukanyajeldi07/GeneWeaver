@@ -712,24 +712,42 @@ async function loadFASTA() {
 
     setProgress(75, "Processing genome records...");
 
-    const summary = data.summary || {};
+    
+const records = Array.isArray(data.records) ? data.records : [];
 
-    let report =
-      "FASTA PARSING COMPLETED\n" +
-      "File: " + file.name + "\n" +
-      "Records: " + summary.records + "\n" +
-      "Total bases: " + summary.total_bases + "\n" +
-      "GC percentage: " +
-      Number(summary.gc_percentage).toFixed(2) + "%\n\n";
+const totalBases = records.reduce(
+    (total, record) => total + record.sequence.length,
+    0
+);
 
-    (data.records_detail || []).forEach((record, index) => {
-      report +=
-        "Record " + (index + 1) + ": " + record.id + "\n" +
-        "Length: " + record.length + " base pairs\n" +
-        "GC percentage: " +
-        Number(record.gc_percentage).toFixed(2) + "%\n" +
-        "Chunks: " + record.chunk_count + "\n\n";
-    });
+const totalGC = records.reduce((total, record) => {
+    const sequence = record.sequence.toUpperCase();
+    return total + (sequence.match(/[GC]/g) || []).length;
+}, 0);
+
+const gcPercentage = totalBases > 0
+    ? (totalGC / totalBases) * 100
+    : 0;
+
+let report =
+    "FASTA PARSING COMPLETED\n" +
+    "File: " + file.name + "\n" +
+    "Records: " + data.record_count + "\n" +
+    "Total bases: " + totalBases + "\n" +
+    "GC percentage: " + gcPercentage.toFixed(2) + "%\n\n";
+
+records.forEach((record, index) => {
+    const sequence = record.sequence.toUpperCase();
+    const length = sequence.length;
+    const gcCount = (sequence.match(/[GC]/g) || []).length;
+    const recordGC = length > 0 ? (gcCount / length) * 100 : 0;
+
+    report +=
+        "Record " + (index + 1) + ": " + record.header + "\n" +
+        "Length: " + length + " base pairs\n" +
+        "GC percentage: " + recordGC.toFixed(2) + "%\n\n";
+});
+
 
     showResult(output, report);
     setProgress(100, "Python FASTA parsing completed");
