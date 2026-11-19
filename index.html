@@ -648,25 +648,33 @@ async function analyzeDNA() {
       body: JSON.stringify({ sequence: sequence })
     });
 
-    let report =
-      "DNA VALIDATION PASSED\n" +
-      "Sequence length: " + data.sequence_length + " base pairs\n" +
-      "DNA composition: " + JSON.stringify(data.composition) + "\n" +
-      "Guide matches: " + data.guide_match_count;
+    
+const pamSites = Array.isArray(data.pam_sites)
+    ? data.pam_sites
+    : [];
 
-    showResult(result, report);
+const composition = data.base_composition || {};
 
-    if (data.pam_sites && data.pam_sites.length > 0) {
-      const pamReport =
-        data.pam_count + " PAM sites detected\n" +
-        data.pam_sites.map(site =>
-          "Position " + site.position + ": " + site.pam
+let report =
+    "DNA VALIDATION PASSED\n" +
+    "Sequence length: " + data.length + " base pairs\n" +
+    "DNA composition: " + JSON.stringify(composition) + "\n" +
+    "PAM sites detected: " + pamSites.length;
+
+showResult(result, report);
+
+if (pamSites.length > 0) {
+    const pamReport =
+        pamSites.length + " PAM sites detected\n" +
+        pamSites.map(site =>
+            "Position " + site.position + ": " + site.pam
         ).join("\n");
 
-      showResult(pam, pamReport);
-    } else {
-      showResult(pam, "No NGG PAM sites found.");
-    }
+    showResult(pam, pamReport);
+} else {
+    showResult(pam, "No NGG PAM sites found.");
+}
+
 
     document.getElementById("validationStatus").textContent = "Passed";
     updateProcessingTime(data);
