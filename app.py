@@ -314,37 +314,27 @@ def gpu_align():
 # CPU VS GPU BENCHMARK API
 # --------------------------------------------------
 
+
 @app.route("/api/benchmark", methods=["GET"])
 def benchmark():
 
     test_sequences = [
         ("ATGC", "ATGC"),
-        (
-            "ATGCGTAC" * 4,
-            "ATGCGTTC" * 4
-        ),
-        (
-            "ATGCGTAC" * 8,
-            "ATGCGTTC" * 8
-        ),
-        (
-            "ATGCGTAC" * 16,
-            "ATGCGTTC" * 16
-        )
+        ("ATGCGTAC" * 4, "ATGCGTTC" * 4),
+        ("ATGCGTAC" * 8, "ATGCGTTC" * 8),
+        ("ATGCGTAC" * 16, "ATGCGTTC" * 16)
     ]
 
     results = []
-
     successful = 0
     failed = 0
+    skipped = 0
 
     gpu_device, gpu_available = get_gpu_device()
-
-    # Warm-up call to initialize the GPU before measuring.
     gpu_initialization_ms = None
 
+    # Initialize GPU only when available.
     if gpu_available:
-
         try:
             initialization_start = time.perf_counter()
 
@@ -359,7 +349,7 @@ def benchmark():
             gpu_available = False
             gpu_device = f"GPU initialization failed: {exc}"
 
-    # Run each benchmark.
+    # Run CPU benchmarks and GPU benchmarks when possible.
     for sequence1, sequence2 in test_sequences:
 
         cpu_times = []
@@ -369,10 +359,8 @@ def benchmark():
         gpu_result = None
 
         try:
-
             for repetition in range(BENCHMARK_REPETITIONS):
 
-                # CPU benchmark
                 start = time.perf_counter()
 
                 cpu_result = needleman_wunsch(
@@ -386,9 +374,7 @@ def benchmark():
 
                 cpu_times.append(cpu_elapsed)
 
-                # GPU benchmark
                 if gpu_available:
-
                     start = time.perf_counter()
 
                     gpu_result = gpu_needleman_wunsch(
@@ -409,27 +395,28 @@ def benchmark():
                 if gpu_times else None
             )
 
-            matches = (
-                alignments_match(cpu_result, gpu_result)
-                if gpu_available
-                else False
-            )
+            if gpu_available:
+                matches = alignments_match(
+                    cpu_result,
+                    gpu_result
+                )
 
-            if matches:
-                successful += 1
-                status = "PASS"
+                if matches:
+                    successful += 1
+                    status = "PASS"
+                else:
+                    failed += 1
+                    status = "FAIL"
 
             else:
-                failed += 1
-                status = "FAIL"
+                matches = None
+                skipped += 1
+                status = "SKIPPED"
 
             results.append({
-
                 "sequence_length": len(sequence1),
 
-                "cpu_time_ms": round(
-                    average_cpu, 4
-                ),
+                "cpu_time_ms": round(average_cpu, 4),
 
                 "gpu_time_ms": (
                     round(average_gpu, 4)
@@ -452,34 +439,37 @@ def benchmark():
                     if average_gpu is not None and average_gpu > 0
                     else None
                 )
-
             })
 
         except Exception as exc:
-
             failed += 1
 
             results.append({
-
                 "sequence_length": len(sequence1),
-
                 "validation": "ERROR",
-
                 "results_match": False,
-
                 "error": str(exc)
-
             })
 
     return jsonify({
 
-        "success": (
-            successful == len(test_sequences)
+        # True means the benchmark request completed
+        # without test execution errors or mismatches.
+        # It does NOT mean GPU validation passed.
+        "success": failed == 0,
+
+        "benchmark_status": (
+            "GPU_VALIDATED"
+            if gpu_available and failed == 0
+            else "GPU_UNAVAILABLE_CPU_ONLY"
+            if not gpu_available and failed == 0
+            else "BENCHMARK_ERRORS"
         ),
 
         "project": "GeneWeaver",
-
         "algorithm": "Needleman-Wunsch",
+
+        "gpu_available": gpu_available,
 
         "gpu_backend": (
             "Intel OpenCL"
@@ -492,17 +482,15 @@ def benchmark():
         "gpu_initialization_ms": gpu_initialization_ms,
 
         "total_tests": len(test_sequences),
-
         "successful_tests": successful,
-
         "failed_tests": failed,
+        "skipped_tests": skipped,
 
         "repetitions": BENCHMARK_REPETITIONS,
-
         "results": results
-
     })
 
+          
 
 # --------------------------------------------------
 # ERROR HANDLERS
