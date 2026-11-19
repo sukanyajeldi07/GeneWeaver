@@ -1,4 +1,4 @@
-
+﻿
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -319,7 +319,7 @@ footer {
 
 <header>
   <div class="logo">GENE<span>WEAVER</span></div>
-  <div class="status" id="headerStatus">● CONNECTING TO PYTHON BACKEND...</div>
+  <div class="status" id="headerStatus">â— CONNECTING TO PYTHON BACKEND...</div>
 </header>
 
 <main>
@@ -386,27 +386,32 @@ footer {
     </div>
   </section>
 
-  <!-- 03 GLOBAL ALIGNMENT -->
-  <section class="panel">
-    <h2>03 / Global Sequence Alignment</h2>
+  
+  
+<!-- 03 GLOBAL ALIGNMENT -->
+<section class="panel">
+  <h2>03 / Global Sequence Alignment</h2>
 
-    <label>DNA Sequence 1</label>
-    <input id="seq1" placeholder="ATGCGTAC">
+  <label>DNA Sequence 1</label>
+  <input id="seq1" placeholder="ATGCGTAC">
 
-    <label>DNA Sequence 2</label>
-    <input id="seq2" placeholder="ATGCTAC">
+  <label>DNA Sequence 2</label>
+  <input id="seq2" placeholder="ATGCTAC">
 
-    <button onclick="runAlignment()">Run CPU Alignment</button>
-    <button onclick="runGPUAlignment()">Run GPU Alignment</button>
+  <button onclick="runAlignment()">Run CPU Alignment</button>
+  <button onclick="runGPUAlignment()">Run GPU Alignment</button>
 
-    <div class="result" id="alignmentResult">
-      Alignment results will appear here.
-    </div>
-  </section>
+  <h3>CPU Alignment Result</h3>
+  <div class="result" id="cpuAlignmentResult">
+    CPU results will appear here.
+  </div>
 
-</div>
+  <h3>GPU Alignment Result</h3>
+  <div class="result" id="gpuAlignmentResult">
+    GPU results will appear here.
+  </div>
+</section>
 
-<div>
 
   <!-- 04 PAM DETECTION -->
   <section class="panel">
@@ -792,7 +797,7 @@ records.forEach((record, index) => {
 async function runAlignment() {
   const a = document.getElementById("seq1").value.trim().toUpperCase();
   const b = document.getElementById("seq2").value.trim().toUpperCase();
-  const output = document.getElementById("alignmentResult");
+  const output = document.getElementById("cpuAlignmentResult");
 
   if (!a || !b) {
     showError(output, "Enter two DNA sequences.");
@@ -850,7 +855,7 @@ async function checkGPUStatus() {
     const gpuDevice = document.getElementById("gpuDevice");
     const progressText = document.getElementById("progressText");
 
-    header.textContent = "● PYTHON BACKEND ONLINE";
+    header.textContent = "â— PYTHON BACKEND ONLINE";
     header.className = "status";
 
     if (data.available === true) {
@@ -873,7 +878,7 @@ async function checkGPUStatus() {
 
   } catch (error) {
     document.getElementById("headerStatus").textContent =
-      "● BACKEND CONNECTION FAILED";
+      "â— BACKEND CONNECTION FAILED";
 
     document.getElementById("gpuDevice").textContent = "Connection failed";
     document.getElementById("progressText").textContent = error.message;
@@ -887,7 +892,7 @@ async function checkGPUStatus() {
 async function runGPUAlignment() {
   const a = document.getElementById("seq1").value.trim().toUpperCase();
   const b = document.getElementById("seq2").value.trim().toUpperCase();
-  const output = document.getElementById("alignmentResult");
+  const output = document.getElementById("gpuAlignmentResult");
 
   if (!a || !b) {
     showError(output, "Enter two DNA sequences.");
@@ -1206,3 +1211,4 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </body>
 </html>
+
