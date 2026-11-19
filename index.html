@@ -779,6 +779,7 @@ records.forEach((record, index) => {
 
 // 03 - CPU ALIGNMENT
 
+
 async function runAlignment() {
   const a = document.getElementById("seq1").value.trim().toUpperCase();
   const b = document.getElementById("seq2").value.trim().toUpperCase();
@@ -802,12 +803,19 @@ async function runAlignment() {
       })
     });
 
+    const result = data.result;
+
+    if (!Array.isArray(result) || result.length < 3) {
+      throw new Error("Invalid alignment result from Python backend.");
+    }
+
     const report =
       "NEEDLEMAN-WUNSCH PYTHON ALIGNMENT\n" +
-      "Sequence 1: " + data.aligned_sequence1 + "\n" +
-      "Sequence 2: " + data.aligned_sequence2 + "\n" +
-      "Alignment score: " + data.alignment_score + "\n" +
-      "Backend: " + (data.backend || "Python CPU");
+      "Sequence 1: " + result[0] + "\n" +
+      "Sequence 2: " + result[1] + "\n" +
+      "Alignment score: " + result[2] + "\n" +
+      "Execution time: " + data.execution_time_ms + " ms\n" +
+      "Backend: " + data.algorithm;
 
     showResult(output, report);
     updateProcessingTime(data);
@@ -820,6 +828,8 @@ async function runAlignment() {
   }
 }
 
+
+  
 
  // GPU STATUS
 
