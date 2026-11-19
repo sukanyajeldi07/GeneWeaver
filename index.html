@@ -544,24 +544,33 @@ footer {
     </div>
   </div>
 
-  <div style="overflow-x:auto;margin-top:20px">
-    <table class="benchmark-table">
-      <thead>
-        <tr>
-          <th>DNA Length</th>
-          <th>CPU (ms)</th>
-          <th>GPU (ms)</th>
-          <th>Validation</th>
-        </tr>
-      </thead>
+  
+<div style="overflow-x:auto;margin-top:20px">
+  <table class="benchmark-table">
+    <thead>
+      <tr>
+        <th>DNA Length</th>
+        <th>CPU Average (ms)</th>
+        <th>CPU Median (ms)</th>
+        <th>CPU Min (ms)</th>
+        <th>CPU Max (ms)</th>
+        <th>GPU Average (ms)</th>
+        <th>GPU Median (ms)</th>
+        <th>GPU Min (ms)</th>
+        <th>GPU Max (ms)</th>
+        <th>Speedup</th>
+        <th>Validation</th>
+      </tr>
+    </thead>
 
-      <tbody id="benchmarkRows">
-        <tr>
-          <td colspan="4">No benchmark results loaded.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <tbody id="benchmarkRows">
+      <tr>
+        <td colspan="11">No benchmark results loaded.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 
   <div class="benchmark-note" id="benchmarkConclusion">
     Benchmark results have not been loaded yet.
@@ -921,6 +930,7 @@ async function runGPUAlignment() {
 // 07 - CPU VS GPU BENCHMARK
 
 
+
 async function runBenchmark() {
 
   const button = document.getElementById("benchmarkButton");
@@ -953,10 +963,9 @@ async function runBenchmark() {
 
     const gpuAvailable = data.gpu_available === true;
 
-    passed.textContent =
-      gpuAvailable
-        ? data.successful_tests + "/" + data.total_tests
-        : "GPU N/A (" + data.skipped_tests + " skipped)";
+    passed.textContent = gpuAvailable
+      ? data.successful_tests + "/" + data.total_tests
+      : "GPU N/A (" + data.skipped_tests + " skipped)";
 
     initTime.textContent =
       data.gpu_initialization_ms == null
@@ -976,7 +985,7 @@ async function runBenchmark() {
       status.style.color = "var(--green)";
     }
 
-    // BUILD RESULTS TABLE
+    // BUILD 11-COLUMN RESULTS TABLE
 
     rows.innerHTML = "";
 
@@ -984,16 +993,24 @@ async function runBenchmark() {
 
       const row = document.createElement("tr");
 
-      const gpuTime =
-        result.gpu_time_ms == null
-          ? "N/A"
-          : Number(result.gpu_time_ms).toFixed(4);
+      const formatTime = value =>
+        value == null ? "N/A" : Number(value).toFixed(4);
+
+      const formatSpeedup = value =>
+        value == null ? "N/A" : Number(value).toFixed(2) + "x";
 
       const values = [
         result.sequence_length,
-        Number(result.cpu_time_ms).toFixed(4),
-        gpuTime,
-        result.validation
+        formatTime(result.cpu_time_ms),
+        formatTime(result.cpu_median_ms),
+        formatTime(result.cpu_min_ms),
+        formatTime(result.cpu_max_ms),
+        formatTime(result.gpu_time_ms),
+        formatTime(result.gpu_median_ms),
+        formatTime(result.gpu_min_ms),
+        formatTime(result.gpu_max_ms),
+        formatSpeedup(result.speedup),
+        result.validation || "UNKNOWN"
       ];
 
       values.forEach((value, index) => {
@@ -1001,7 +1018,16 @@ async function runBenchmark() {
         const cell = document.createElement("td");
         cell.textContent = value;
 
-        if (index === 3) {
+        if (index === 9 && result.speedup != null) {
+          cell.className =
+            Number(result.speedup) > 1
+              ? "good"
+              : Number(result.speedup) < 1
+              ? "bad"
+              : "";
+        }
+
+        if (index === 10) {
           cell.className =
             result.validation === "PASS"
               ? "good"
@@ -1016,17 +1042,17 @@ async function runBenchmark() {
       rows.appendChild(row);
     });
 
-    // BUILD COMPARISON CHART
+    // BUILD MEDIAN EXECUTION TIME CHART
 
     chart.innerHTML = "";
 
     data.results.forEach(result => {
 
-      const cpu = Number(result.cpu_time_ms);
-      const gpuAvailableForRow = result.gpu_time_ms != null;
-      const gpu = gpuAvailableForRow
-        ? Number(result.gpu_time_ms)
-        : null;
+      const cpu = Number(result.cpu_median_ms ?? result.cpu_time_ms);
+
+      const gpu = result.gpu_median_ms == null
+        ? null
+        : Number(result.gpu_median_ms);
 
       const maximum = Math.max(cpu, gpu ?? 0, 0.001);
 
@@ -1036,17 +1062,14 @@ async function runBenchmark() {
       const heading = document.createElement("div");
       heading.className = "benchmark-heading";
       heading.textContent =
-        "DNA Sequence Length: " + result.sequence_length;
+        "DNA Sequence Length: " + result.sequence_length +
+        " | Median Execution Time";
 
       group.appendChild(heading);
 
       const barItems = [
-        { label: "CPU", value: cpu, className: "cpu-bar" },
-        {
-          label: "GPU",
-          value: gpu,
-          className: "gpu-bar"
-        }
+        { label: "CPU Median", value: cpu, className: "cpu-bar" },
+        { label: "GPU Median", value: gpu, className: "gpu-bar" }
       ];
 
       barItems.forEach(item => {
@@ -1070,6 +1093,7 @@ async function runBenchmark() {
         track.className = "bar-track";
 
         if (item.value != null) {
+
           const bar = document.createElement("div");
           bar.className = "bar-fill " + item.className;
 
@@ -1096,16 +1120,22 @@ async function runBenchmark() {
       "GPU tests skipped: " + (data.skipped_tests ?? 0) + "\n" +
       "GPU validations passed: " + data.successful_tests + "\n" +
       "Failed tests: " + data.failed_tests + "\n" +
-      "Repetitions per sequence size: " + data.repetitions + "\n";
+      "Repetitions per sequence size: " + data.repetitions + "\n" +
+      "Statistics: Average, median, minimum and maximum.\n" +
+      "Speedup: CPU median divided by GPU median.\n";
 
     if (!gpuAvailable) {
+
       summary +=
         "\nCPU-only benchmark completed successfully.\n" +
         "GPU validation was skipped because OpenCL is unavailable.\n" +
-        "CPU timings are available; GPU timings are not available.";
+        "CPU timings are available; GPU timings and speedup are unavailable.";
+
     } else {
+
       summary +=
-        "\nGPU benchmark completed. Review the measured results above.";
+        "\nCPU and GPU benchmark completed.\n" +
+        "Compare median execution times and speedup for each sequence size.";
     }
 
     conclusion.textContent = summary;
@@ -1123,11 +1153,12 @@ async function runBenchmark() {
     status.style.color = "var(--red)";
 
     chart.textContent = error.message;
+
     conclusion.textContent =
       "Benchmark could not be completed. Check the Flask backend.";
 
     showError(
-      document.getElementById("benchmarkConclusion"),
+      conclusion,
       error.message
     );
 
@@ -1140,6 +1171,7 @@ async function runBenchmark() {
 
   }
 }
+
 
 
 // CLEAR RESULTS

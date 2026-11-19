@@ -8,6 +8,7 @@ CPU and Intel OpenCL GPU alignment benchmarking.
 """
 
 import time
+import statistics
 from pathlib import Path
 
 from flask import Flask, jsonify, request, send_from_directory
@@ -30,7 +31,7 @@ CORS(app)
 
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 
-BENCHMARK_REPETITIONS = 3
+BENCHMARK_REPETITIONS = 5
 
 
 # --------------------------------------------------
@@ -316,10 +317,10 @@ def gpu_align():
     })
 
 
+
 # --------------------------------------------------
 # CPU VS GPU BENCHMARK API
 # --------------------------------------------------
-
 
 @app.route("/api/benchmark", methods=["GET"])
 def benchmark():
@@ -339,7 +340,7 @@ def benchmark():
     gpu_device, gpu_available = get_gpu_device()
     gpu_initialization_ms = None
 
-    # Initialize GPU only when available.
+    # Initialize GPU separately from benchmark timings.
     if gpu_available:
         try:
             initialization_start = time.perf_counter()
@@ -355,7 +356,7 @@ def benchmark():
             gpu_available = False
             gpu_device = f"GPU initialization failed: {exc}"
 
-    # Run CPU benchmarks and GPU benchmarks when possible.
+    # Run CPU and GPU benchmarks.
     for sequence1, sequence2 in test_sequences:
 
         cpu_times = []
@@ -365,8 +366,10 @@ def benchmark():
         gpu_result = None
 
         try:
+
             for repetition in range(BENCHMARK_REPETITIONS):
 
+                # CPU measurement
                 start = time.perf_counter()
 
                 cpu_result = needleman_wunsch(
@@ -380,7 +383,9 @@ def benchmark():
 
                 cpu_times.append(cpu_elapsed)
 
+                # GPU measurement
                 if gpu_available:
+
                     start = time.perf_counter()
 
                     gpu_result = gpu_needleman_wunsch(
@@ -394,14 +399,36 @@ def benchmark():
 
                     gpu_times.append(gpu_elapsed)
 
-            average_cpu = sum(cpu_times) / len(cpu_times)
+            # CPU statistics
+            average_cpu = statistics.mean(cpu_times)
+            median_cpu = statistics.median(cpu_times)
+            minimum_cpu = min(cpu_times)
+            maximum_cpu = max(cpu_times)
 
+            # GPU statistics
             average_gpu = (
-                sum(gpu_times) / len(gpu_times)
+                statistics.mean(gpu_times)
                 if gpu_times else None
             )
 
+            median_gpu = (
+                statistics.median(gpu_times)
+                if gpu_times else None
+            )
+
+            minimum_gpu = (
+                min(gpu_times)
+                if gpu_times else None
+            )
+
+            maximum_gpu = (
+                max(gpu_times)
+                if gpu_times else None
+            )
+
+            # Validate CPU and GPU alignment results.
             if gpu_available:
+
                 matches = alignments_match(
                     cpu_result,
                     gpu_result
@@ -419,10 +446,15 @@ def benchmark():
                 skipped += 1
                 status = "SKIPPED"
 
+            # Store benchmark results.
             results.append({
+
                 "sequence_length": len(sequence1),
 
                 "cpu_time_ms": round(average_cpu, 4),
+                "cpu_median_ms": round(median_cpu, 4),
+                "cpu_min_ms": round(minimum_cpu, 4),
+                "cpu_max_ms": round(maximum_cpu, 4),
 
                 "gpu_time_ms": (
                     round(average_gpu, 4)
@@ -430,8 +462,25 @@ def benchmark():
                     else None
                 ),
 
-                "results_match": matches,
+                "gpu_median_ms": (
+                    round(median_gpu, 4)
+                    if median_gpu is not None
+                    else None
+                ),
 
+                "gpu_min_ms": (
+                    round(minimum_gpu, 4)
+                    if minimum_gpu is not None
+                    else None
+                ),
+
+                "gpu_max_ms": (
+                    round(maximum_gpu, 4)
+                    if maximum_gpu is not None
+                    else None
+                ),
+
+                "results_match": matches,
                 "validation": status,
 
                 "alignment_score": get_alignment_score(
@@ -440,14 +489,18 @@ def benchmark():
 
                 "repetitions": BENCHMARK_REPETITIONS,
 
+                # Speedup uses median execution times.
+                # Values above 1 mean GPU was faster.
+                # Values below 1 mean CPU was faster.
                 "speedup": (
-                    round(average_cpu / average_gpu, 4)
-                    if average_gpu is not None and average_gpu > 0
+                    round(median_cpu / median_gpu, 4)
+                    if median_gpu is not None and median_gpu > 0
                     else None
                 )
             })
 
         except Exception as exc:
+
             failed += 1
 
             results.append({
@@ -459,9 +512,6 @@ def benchmark():
 
     return jsonify({
 
-        # True means the benchmark request completed
-        # without test execution errors or mismatches.
-        # It does NOT mean GPU validation passed.
         "success": failed == 0,
 
         "benchmark_status": (
