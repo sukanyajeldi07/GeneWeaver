@@ -891,6 +891,7 @@ async function runGPUAlignment() {
 
 // 07 - CPU VS GPU BENCHMARK
 
+
 async function runBenchmark() {
 
   const button = document.getElementById("benchmarkButton");
@@ -909,9 +910,9 @@ async function runBenchmark() {
 
   chart.textContent = "Connecting to Python benchmark API...";
   rows.innerHTML = "";
-  conclusion.textContent = "Running CPU and GPU comparisons...";
+  conclusion.textContent = "Running benchmark...";
 
-  setProgress(20, "Starting CPU vs GPU benchmark...");
+  setProgress(20, "Starting benchmark...");
 
   try {
 
@@ -921,19 +922,30 @@ async function runBenchmark() {
       throw new Error("Benchmark returned no results.");
     }
 
+    const gpuAvailable = data.gpu_available === true;
+
     passed.textContent =
-      data.successful_tests + "/" + data.total_tests;
+      gpuAvailable
+        ? data.successful_tests + "/" + data.total_tests
+        : "GPU N/A (" + data.skipped_tests + " skipped)";
 
     initTime.textContent =
-      Number(data.gpu_initialization_ms).toFixed(2) + " ms";
+      data.gpu_initialization_ms == null
+        ? "N/A"
+        : Number(data.gpu_initialization_ms).toFixed(2) + " ms";
 
     device.textContent = data.gpu_device || "Unavailable";
 
-    status.textContent =
-      data.failed_tests === 0 ? "ALL PASSED" : "CHECK RESULTS";
-
-    status.style.color =
-      data.failed_tests === 0 ? "var(--green)" : "var(--red)";
+    if (data.benchmark_status === "GPU_UNAVAILABLE_CPU_ONLY") {
+      status.textContent = "CPU ONLY - GPU UNAVAILABLE";
+      status.style.color = "var(--cyan)";
+    } else if (data.failed_tests > 0) {
+      status.textContent = "CHECK RESULTS";
+      status.style.color = "var(--red)";
+    } else {
+      status.textContent = "GPU VALIDATED";
+      status.style.color = "var(--green)";
+    }
 
     // BUILD RESULTS TABLE
 
@@ -943,10 +955,15 @@ async function runBenchmark() {
 
       const row = document.createElement("tr");
 
+      const gpuTime =
+        result.gpu_time_ms == null
+          ? "N/A"
+          : Number(result.gpu_time_ms).toFixed(4);
+
       const values = [
         result.sequence_length,
         Number(result.cpu_time_ms).toFixed(4),
-        Number(result.gpu_time_ms).toFixed(4),
+        gpuTime,
         result.validation
       ];
 
@@ -957,7 +974,11 @@ async function runBenchmark() {
 
         if (index === 3) {
           cell.className =
-            result.validation === "PASS" ? "good" : "bad";
+            result.validation === "PASS"
+              ? "good"
+              : result.validation === "SKIPPED"
+              ? ""
+              : "bad";
         }
 
         row.appendChild(cell);
@@ -973,8 +994,12 @@ async function runBenchmark() {
     data.results.forEach(result => {
 
       const cpu = Number(result.cpu_time_ms);
-      const gpu = Number(result.gpu_time_ms);
-      const maximum = Math.max(cpu, gpu, 0.001);
+      const gpuAvailableForRow = result.gpu_time_ms != null;
+      const gpu = gpuAvailableForRow
+        ? Number(result.gpu_time_ms)
+        : null;
+
+      const maximum = Math.max(cpu, gpu ?? 0, 0.001);
 
       const group = document.createElement("div");
       group.className = "benchmark-group";
@@ -988,7 +1013,11 @@ async function runBenchmark() {
 
       const barItems = [
         { label: "CPU", value: cpu, className: "cpu-bar" },
-        { label: "GPU", value: gpu, className: "gpu-bar" }
+        {
+          label: "GPU",
+          value: gpu,
+          className: "gpu-bar"
+        }
       ];
 
       barItems.forEach(item => {
@@ -1000,7 +1029,10 @@ async function runBenchmark() {
         name.textContent = item.label;
 
         const value = document.createElement("span");
-        value.textContent = item.value.toFixed(4) + " ms";
+        value.textContent =
+          item.value == null
+            ? "N/A (GPU unavailable)"
+            : item.value.toFixed(4) + " ms";
 
         label.appendChild(name);
         label.appendChild(value);
@@ -1008,13 +1040,15 @@ async function runBenchmark() {
         const track = document.createElement("div");
         track.className = "bar-track";
 
-        const bar = document.createElement("div");
-        bar.className = "bar-fill " + item.className;
+        if (item.value != null) {
+          const bar = document.createElement("div");
+          bar.className = "bar-fill " + item.className;
 
-        bar.style.width =
-          Math.max(1, item.value / maximum * 100) + "%";
+          bar.style.width =
+            Math.max(1, item.value / maximum * 100) + "%";
 
-        track.appendChild(bar);
+          track.appendChild(bar);
+        }
 
         group.appendChild(label);
         group.appendChild(track);
@@ -1025,32 +1059,34 @@ async function runBenchmark() {
 
     // PERFORMANCE SUMMARY
 
-    const cpuFaster = data.results.filter(
-      result =>
-        Number(result.cpu_time_ms) < Number(result.gpu_time_ms)
-    ).length;
-
     let summary =
       "BENCHMARK SUMMARY\n" +
       "Algorithm: " + data.algorithm + "\n" +
       "GPU device: " + data.gpu_device + "\n" +
-      "Successful tests: " + data.successful_tests + "/" +
-      data.total_tests + "\n" +
+      "CPU tests completed: " + data.total_tests + "\n" +
+      "GPU tests skipped: " + (data.skipped_tests ?? 0) + "\n" +
+      "GPU validations passed: " + data.successful_tests + "\n" +
+      "Failed tests: " + data.failed_tests + "\n" +
       "Repetitions per sequence size: " + data.repetitions + "\n";
 
-    if (cpuFaster === data.results.length) {
+    if (!gpuAvailable) {
       summary +=
-        "CPU was faster in all tested sequence sizes.\n" +
-        "OpenCL execution overhead affects these smaller workloads.";
+        "\nCPU-only benchmark completed successfully.\n" +
+        "GPU validation was skipped because OpenCL is unavailable.\n" +
+        "CPU timings are available; GPU timings are not available.";
     } else {
       summary +=
-        "Performance varies across sequence sizes. " +
-        "Review the measured results above.";
+        "\nGPU benchmark completed. Review the measured results above.";
     }
 
     conclusion.textContent = summary;
 
-    setProgress(100, "CPU vs GPU benchmark completed successfully");
+    setProgress(
+      100,
+      gpuAvailable
+        ? "CPU and GPU benchmark completed"
+        : "CPU-only benchmark completed; GPU validation skipped"
+    );
 
   } catch (error) {
 
@@ -1059,7 +1095,7 @@ async function runBenchmark() {
 
     chart.textContent = error.message;
     conclusion.textContent =
-      "Benchmark could not be completed. Check that the Flask backend is running.";
+      "Benchmark could not be completed. Check the Flask backend.";
 
     showError(
       document.getElementById("benchmarkConclusion"),
@@ -1075,6 +1111,7 @@ async function runBenchmark() {
 
   }
 }
+
 
 // CLEAR RESULTS
 
