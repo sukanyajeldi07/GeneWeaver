@@ -296,7 +296,13 @@ def gpu_align():
 
     start = time.perf_counter()
 
-    result = gpu_needleman_wunsch(seq1, seq2)
+    try:
+        result = gpu_needleman_wunsch(seq1, seq2)
+    except Exception:
+        return jsonify({
+        "success": False,
+        "error": "GPU alignment is unavailable on this server. Please use CPU Alignment or run GeneWeaver locally with an available OpenCL GPU."
+    }), 503
 
     elapsed = (
         time.perf_counter() - start
