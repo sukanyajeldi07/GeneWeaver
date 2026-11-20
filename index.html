@@ -8,309 +8,150 @@
 
 <style>
 :root {
-  --bg:#080e1b;
-  --panel:#111c30;
-  --panel2:#16243a;
-  --line:#263b57;
-  --cyan:#35d9ef;
-  --green:#36e6a0;
-  --red:#ff647c;
-  --text:#e9f2ff;
-  --muted:#8fa4bf;
+  --bg:#070d18;
+  --panel:#101b2d;
+  --panel2:#15243a;
+  --line:#263c59;
+  --cyan:#43dff2;
+  --green:#42e6a4;
+  --red:#ff7188;
+  --text:#edf5ff;
+  --muted:#91a7c2;
 }
-
-* { box-sizing:border-box; }
-
+* {box-sizing:border-box}
 body {
   margin:0;
-  background:var(--bg);
   color:var(--text);
   font-family:Arial,sans-serif;
+  background:
+    radial-gradient(circle at 10% 0%,#10283a 0,transparent 30%),
+    radial-gradient(circle at 90% 5%,#1b1a3b 0,transparent 25%),
+    var(--bg);
 }
-
 header {
-  padding:22px 5%;
+  position:sticky;top:0;z-index:10;
+  padding:19px 5%;
+  display:flex;justify-content:space-between;
+  align-items:center;gap:15px;flex-wrap:wrap;
+  background:rgba(7,13,24,.95);
   border-bottom:1px solid var(--line);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:15px;
+  backdrop-filter:blur(12px);
 }
-
-.logo {
-  font-size:23px;
-  font-weight:bold;
-  color:var(--cyan);
-  letter-spacing:1px;
-}
-
-.logo span { color:white; }
-
+.logo {font-size:23px;font-weight:bold;color:var(--cyan);letter-spacing:2px}
+.logo span {color:white}
 .status {
-  color:var(--green);
-  font-size:12px;
+  color:var(--green);font-size:12px;font-weight:bold;
+  padding:8px 13px;border-radius:25px;
+  border:1px solid #28634f;background:#10291f;
 }
-
-main {
-  max-width:1450px;
-  margin:auto;
-  padding:28px 5%;
+main {max-width:1450px;margin:auto;padding:28px 5%}
+.hero {
+  padding:28px;border:1px solid var(--line);
+  border-radius:16px;margin-bottom:25px;
+  background:linear-gradient(120deg,#142b43,#10172d);
 }
-
-.hero { margin-bottom:25px; }
-
-.hero h1 {
-  font-size:30px;
-  margin:0 0 10px;
+.hero-tag {
+  color:var(--cyan);font-size:10px;
+  font-weight:bold;letter-spacing:2px;
 }
-
-.hero p,.muted { color:var(--muted); }
-
+.hero h1 {font-size:clamp(25px,3vw,36px);margin:12px 0}
+.hero p,.muted {color:var(--muted);line-height:1.7}
 .grid {
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:15px;
-  margin:25px 0;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:15px;margin:22px 0;
 }
-
 .card,.panel {
-  background:var(--panel);
+  background:linear-gradient(145deg,#14243a,#0e192b);
   border:1px solid var(--line);
-  border-radius:12px;
-  padding:20px;
+  border-radius:13px;padding:20px;
+  box-shadow:0 10px 25px #0003;
 }
-
-.card small { color:var(--muted); }
-
-.metric {
-  font-size:26px;
-  color:var(--cyan);
-  font-weight:bold;
-  margin-top:12px;
+.card {border-left:3px solid var(--cyan)}
+.card small {
+  color:var(--muted);font-size:10px;
+  font-weight:bold;letter-spacing:1px;
+  text-transform:uppercase;
 }
-
-.layout {
-  display:grid;
-  grid-template-columns:1.15fr .85fr;
-  gap:18px;
-}
-
-.panel { margin-bottom:18px; }
-
+.metric {font-size:25px;color:var(--cyan);font-weight:bold;margin-top:12px}
+.layout {display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
+.panel {margin-bottom:18px}
 h2 {
-  font-size:17px;
-  margin:0 0 18px;
+  font-size:17px;margin:0 0 18px;
+  padding-bottom:13px;border-bottom:1px solid var(--line);
 }
-
-h3 {
-  font-size:15px;
-  margin:5px 0 15px;
-}
-
-label {
-  display:block;
-  color:var(--muted);
-  margin:13px 0 8px;
-  font-size:13px;
-}
-
+h3 {font-size:14px;margin:18px 0 10px}
+label {display:block;color:var(--muted);font-size:13px;margin:13px 0 8px}
 textarea,input {
-  width:100%;
-  background:#081323;
-  border:1px solid var(--line);
-  color:white;
-  padding:13px;
-  border-radius:7px;
-  outline:none;
-  font-family:monospace;
+  width:100%;background:#081323;color:white;
+  border:1px solid var(--line);border-radius:7px;
+  padding:13px;font-family:monospace;outline:none;
 }
-
-textarea { min-height:110px; resize:vertical; }
-
-input:focus,textarea:focus {
-  border-color:var(--cyan);
-}
-
+textarea {min-height:110px;resize:vertical}
+input:focus,textarea:focus {border-color:var(--cyan);box-shadow:0 0 0 3px #43dff21a}
 button {
-  background:var(--cyan);
-  color:#07111e;
-  border:0;
-  padding:12px 18px;
-  border-radius:7px;
-  font-weight:bold;
-  cursor:pointer;
-  margin-top:13px;
-  margin-right:6px;
+  background:var(--cyan);color:#07111e;
+  border:0;border-radius:7px;padding:12px 17px;
+  font-weight:bold;cursor:pointer;margin:13px 6px 0 0;
 }
-
-button:hover { opacity:.85; }
-
-button:disabled {
-  opacity:.55;
-  cursor:not-allowed;
-}
-
-.secondary {
-  background:var(--panel2);
-  color:var(--text);
-  border:1px solid var(--line);
-}
-
+button:hover {filter:brightness(1.1);transform:translateY(-1px)}
+button:disabled {opacity:.5;cursor:not-allowed}
+.secondary {background:var(--panel2);color:white;border:1px solid var(--line)}
 .result {
-  background:#081323;
-  border:1px solid var(--line);
-  border-radius:8px;
-  padding:14px;
-  margin-top:15px;
-  min-height:65px;
-  overflow-wrap:anywhere;
-  white-space:pre-wrap;
-  font-family:monospace;
+  background:#081323;border:1px solid var(--line);
+  border-radius:8px;padding:14px;margin-top:15px;
+  min-height:65px;white-space:pre-wrap;
+  overflow-wrap:anywhere;font:13px/1.8 monospace;
+}
+.good {color:var(--green)}
+.bad {color:var(--red)}
+.cyan {color:var(--cyan)}
+.info-row {
+  display:flex;justify-content:space-between;gap:12px;
+  padding:12px 0;border-bottom:1px solid var(--line);
   font-size:13px;
-  line-height:1.8;
 }
-
-.good { color:var(--green); }
-.bad { color:var(--red); }
-.cyan { color:var(--cyan); }
-
-.progress {
-  height:8px;
-  background:#26364c;
-  border-radius:20px;
-  overflow:hidden;
-  margin-top:14px;
-}
-
+.info-row span:last-child {text-align:right;font-weight:bold}
+.progress {height:9px;background:#263b55;border-radius:20px;overflow:hidden;margin-top:14px}
 .progress div {
-  height:100%;
-  width:0%;
-  background:var(--green);
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--cyan),var(--green));
   transition:width .3s;
 }
-
-.info-row {
-  display:flex;
-  justify-content:space-between;
-  padding:12px 0;
-  border-bottom:1px solid var(--line);
-  font-size:13px;
-  gap:10px;
-}
-
-pre {
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-}
-
-footer {
-  text-align:center;
-  padding:25px;
-  color:var(--muted);
-  border-top:1px solid var(--line);
-  font-size:12px;
-}
-
-/* BENCHMARK CHART */
-
-.benchmark-chart {
-  display:flex;
-  flex-direction:column;
-  gap:22px;
-  margin-top:15px;
-}
-
+.benchmark-chart {display:flex;flex-direction:column;gap:18px;margin-top:15px}
 .benchmark-group {
-  padding-bottom:15px;
-  border-bottom:1px solid var(--line);
+  padding:15px;border:1px solid var(--line);
+  border-radius:9px;background:#071321;
 }
-
-.benchmark-heading {
-  color:var(--cyan);
-  font-weight:bold;
-  font-size:13px;
-  margin-bottom:12px;
+.benchmark-heading {color:var(--cyan);font-weight:bold;font-size:13px;margin-bottom:12px}
+.bar-label {display:flex;justify-content:space-between;gap:10px;font-size:12px;margin:9px 0 5px}
+.bar-track {height:13px;background:#26364c;border-radius:20px;overflow:hidden}
+.bar-fill {height:100%;min-width:2px;border-radius:20px}
+.cpu-bar {background:var(--green)}
+.gpu-bar {background:#35a7ff}
+.chart-legend {display:flex;gap:20px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:12px 0}
+.legend-dot {display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.table-wrap {overflow-x:auto;margin-top:20px}
+.benchmark-table {width:100%;min-width:950px;border-collapse:collapse;font-size:12px}
+.benchmark-table th,.benchmark-table td {padding:12px 9px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+.benchmark-table th {color:var(--cyan);background:#14243a}
+.benchmark-note {color:var(--muted);font-size:12px;line-height:1.7;margin-top:15px}
+footer {
+  text-align:center;padding:25px;
+  color:var(--muted);border-top:1px solid var(--line);
+  font-size:12px;line-height:1.8;
 }
-
-.bar-label {
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  font-size:12px;
-  margin:9px 0 5px;
-}
-
-.bar-track {
-  width:100%;
-  height:13px;
-  background:#26364c;
-  border-radius:20px;
-  overflow:hidden;
-}
-
-.bar-fill {
-  height:100%;
-  min-width:2px;
-  border-radius:20px;
-  transition:width .5s;
-}
-
-.cpu-bar { background:var(--green); }
-.gpu-bar { background:#35a7ff; }
-
-.chart-legend {
-  display:flex;
-  gap:20px;
-  flex-wrap:wrap;
-  margin-top:15px;
-  font-size:12px;
-  color:var(--muted);
-}
-
-.legend-dot {
-  display:inline-block;
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  margin-right:6px;
-}
-
-.benchmark-table {
-  width:100%;
-  border-collapse:collapse;
-  text-align:left;
-  font-size:13px;
-}
-
-.benchmark-table th,
-.benchmark-table td {
-  padding:12px 10px;
-  border-bottom:1px solid var(--line);
-}
-
-.benchmark-table th {
-  color:var(--cyan);
-}
-
-.benchmark-note {
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.7;
-  margin-top:15px;
-}
-
 @media(max-width:850px) {
-  .grid { grid-template-columns:repeat(2,1fr); }
-  .layout { grid-template-columns:1fr; }
+  .grid {grid-template-columns:repeat(2,1fr)}
+  .layout {grid-template-columns:1fr}
+  header {position:relative}
 }
-
 @media(max-width:480px) {
-  .grid { grid-template-columns:1fr; }
-  .hero h1 { font-size:24px; }
-  .benchmark-table { font-size:11px; }
-  .benchmark-table th,
-  .benchmark-table td { padding:9px 5px; }
+  main {padding:18px 4%}
+  .grid {grid-template-columns:1fr}
+  .hero {padding:20px}
+  .hero h1 {font-size:25px}
+  .card,.panel {padding:16px}
+  button {width:100%}
 }
 </style>
 </head>
@@ -319,268 +160,137 @@ footer {
 
 <header>
   <div class="logo">GENE<span>WEAVER</span></div>
-  <div class="status" id="headerStatus">â— CONNECTING TO PYTHON BACKEND...</div>
+  <div class="status" id="headerStatus">● CONNECTING TO PYTHON BACKEND...</div>
 </header>
 
 <main>
 
 <section class="hero">
+  <div class="hero-tag">GENOMICS • SEQUENCE INTELLIGENCE • HIGH PERFORMANCE COMPUTING</div>
   <h1>Genomic Control Center</h1>
   <p>GPU-Assisted CRISPR Alignment Engine | Bioinformatics & High Performance Computing</p>
 </section>
 
 <section class="grid">
-
   <div class="card">
     <small>Analysis Engine</small>
     <div class="metric">READY</div>
   </div>
-
   <div class="card">
     <small>Sequence Analyzer</small>
     <div class="metric">DNA</div>
   </div>
-
   <div class="card">
     <small>Alignment Method</small>
     <div class="metric">CPU + GPU</div>
   </div>
-
   <div class="card">
-    <small>GPU Backend</small>
-    <div class="metric" style="font-size:19px">OpenCL</div>
+    <small>GPU Technology</small>
+    <div class="metric">OpenCL</div>
   </div>
-
 </section>
 
 <div class="layout">
-
 <div>
 
-  <!-- 01 DNA ANALYZER -->
-  <section class="panel">
-    <h2>01 / DNA Sequence Analyzer</h2>
-
-    <label>Enter DNA sequence (A, T, G, C)</label>
-    <textarea id="sequence" placeholder="Example: ATGCGTACGGATGCGT"></textarea>
-
-    <button onclick="analyzeDNA()">Analyze Sequence</button>
-    <button class="secondary" onclick="clearResults()">Clear</button>
-
-    <div class="result" id="dnaResult">
-      Waiting for DNA sequence...
-    </div>
-  </section>
-
-  <!-- 02 FASTA PARSER -->
-  <section class="panel">
-    <h2>02 / FASTA Genome Parser</h2>
-
-    <label>Upload FASTA file (.fasta or .fa)</label>
-    <input type="file" id="fastaFile" accept=".fasta,.fa,.fna,.txt">
-
-    <button onclick="loadFASTA()">Process FASTA</button>
-
-    <div class="result" id="fastaResult">
-      No FASTA file selected.
-    </div>
-  </section>
-
-  
-  
-<!-- 03 GLOBAL ALIGNMENT -->
 <section class="panel">
-  <h2>03 / Global Sequence Alignment</h2>
-
-  <label>DNA Sequence 1</label>
-  <input id="seq1" placeholder="ATGCGTAC">
-
-  <label>DNA Sequence 2</label>
-  <input id="seq2" placeholder="ATGCTAC">
-
-  <button onclick="runAlignment()">Run CPU Alignment</button>
-  <button onclick="runGPUAlignment()">Run GPU Alignment</button>
-
-  <h3>CPU Alignment Result</h3>
-  <div class="result" id="cpuAlignmentResult">
-    CPU results will appear here.
-  </div>
-
-  <h3>GPU Alignment Result</h3>
-  <div class="result" id="gpuAlignmentResult">
-    GPU results will appear here.
-  </div>
+  <h2>01 / DNA Sequence Analyzer</h2>
+  <label>Enter DNA sequence (A, T, G, C)</label>
+  <textarea id="sequence" placeholder="Example: ATGCGTACGGATGCGT"></textarea>
+  <button onclick="analyzeDNA()">Analyze Sequence</button>
+  <button class="secondary" onclick="clearResults()">Clear</button>
+  <div class="result" id="dnaResult">Waiting for DNA sequence...</div>
 </section>
 
+<section class="panel">
+  <h2>02 / FASTA Genome Parser</h2>
+  <label>Upload FASTA file (.fasta or .fa)</label>
+  <input type="file" id="fastaFile" accept=".fasta,.fa,.fna,.txt">
+  <button onclick="loadFASTA()">Process FASTA</button>
+  <div class="result" id="fastaResult">No FASTA file selected.</div>
+</section>
 
-  <!-- 04 PAM DETECTION -->
-  <section class="panel">
-    <h2>04 / PAM Site Detection</h2>
-    <p class="muted">SpCas9 PAM motif: N-G-G</p>
+<section class="panel">
+  <h2>03 / Global Sequence Alignment</h2>
+  <label>DNA Sequence 1</label>
+  <input id="seq1" placeholder="ATGCGTAC">
+  <label>DNA Sequence 2</label>
+  <input id="seq2" placeholder="ATGCTAC">
+  <button onclick="runAlignment()">Run CPU Alignment</button>
+  <button onclick="runGPUAlignment()">Run GPU Alignment</button>
+  <h3>CPU Alignment Result</h3>
+  <div class="result" id="cpuAlignmentResult">CPU results will appear here.</div>
+  <h3>GPU Alignment Result</h3>
+  <div class="result" id="gpuAlignmentResult">GPU results will appear here.</div>
+</section>
 
-    <div class="result" id="pamResult">
-      Waiting for sequence analysis...
-    </div>
-  </section>
+<section class="panel">
+  <h2>04 / PAM Site Detection</h2>
+  <p class="muted">SpCas9 PAM motif: N-G-G</p>
+  <div class="result" id="pamResult">Waiting for sequence analysis...</div>
+</section>
 
-  <!-- 05 PROCESSING MONITOR -->
-  <section class="panel">
-    <h2>05 / Processing Monitor</h2>
+<section class="panel">
+  <h2>05 / Processing Monitor</h2>
+  <div class="info-row"><span>Interface</span><span class="good">Online</span></div>
+  <div class="info-row"><span>DNA Validation</span><span id="validationStatus">Waiting</span></div>
+  <div class="info-row"><span>Alignment Engine</span><span id="alignmentEngine">CPU Baseline</span></div>
+  <div class="info-row"><span>GPU Device</span><span id="gpuDevice">Checking...</span></div>
+  <div class="info-row"><span>Last Processing Time</span><span id="processingTime">--</span></div>
+  <p class="muted">Analysis progress</p>
+  <div class="progress"><div id="progressBar"></div></div>
+  <p id="progressText" class="muted">Waiting for operation...</p>
+</section>
 
-    <div class="info-row">
-      <span>Interface</span>
-      <span class="good" id="interfaceStatus">Online</span>
-    </div>
-
-    <div class="info-row">
-      <span>DNA Validation</span>
-      <span id="validationStatus">Waiting</span>
-    </div>
-
-    <div class="info-row">
-      <span>Alignment Engine</span>
-      <span id="alignmentEngine">CPU Baseline</span>
-    </div>
-
-    <div class="info-row">
-      <span>GPU Device</span>
-      <span id="gpuDevice">Checking...</span>
-    </div>
-
-    <div class="info-row">
-      <span>Last Processing Time</span>
-      <span id="processingTime">--</span>
-    </div>
-
-    <p class="muted">Analysis progress</p>
-
-    <div class="progress">
-      <div id="progressBar"></div>
-    </div>
-
-    <p id="progressText" class="muted">Waiting for operation...</p>
-  </section>
-
-  <!-- 06 PROJECT INFORMATION -->
-  <section class="panel">
-    <h2>06 / Project Information</h2>
-
-    <div class="info-row">
-      <span>Domain</span>
-      <span>Bioinformatics</span>
-    </div>
-
-    <div class="info-row">
-      <span>Algorithm</span>
-      <span>Needleman-Wunsch</span>
-    </div>
-
-    <div class="info-row">
-      <span>GPU Technology</span>
-      <span>OpenCL</span>
-    </div>
-
-    <div class="info-row">
-      <span>Sequence Format</span>
-      <span>FASTA</span>
-    </div>
-
-    <div class="info-row">
-      <span>PAM Motif</span>
-      <span>NGG</span>
-    </div>
-  </section>
+<section class="panel">
+  <h2>06 / Project Information</h2>
+  <div class="info-row"><span>Domain</span><span>Bioinformatics</span></div>
+  <div class="info-row"><span>Algorithm</span><span>Needleman-Wunsch</span></div>
+  <div class="info-row"><span>GPU Technology</span><span>OpenCL</span></div>
+  <div class="info-row"><span>Sequence Format</span><span>FASTA</span></div>
+  <div class="info-row"><span>PAM Motif</span><span>NGG</span></div>
+</section>
 
 </div>
 </div>
 
-<!-- 07 CPU VS GPU BENCHMARK -->
 <section class="panel" id="benchmarkSection">
   <h2>07 / CPU vs GPU Performance Benchmark</h2>
+  <p class="muted">Needleman-Wunsch Algorithm | OpenCL GPU when available</p>
+  <button id="benchmarkButton" onclick="runBenchmark()">Run Benchmark</button>
 
-  <p class="muted">
-    Needleman-Wunsch Algorithm | Local Intel OpenCL GPU
-  </p>
-
-  <button id="benchmarkButton" onclick="runBenchmark()">
-    Run Benchmark
-  </button>
-
-  <div class="grid" style="margin-top:18px">
-
-    <div class="card">
-      <small>Successful Tests</small>
-      <div class="metric" id="benchmarkPassed">--</div>
-    </div>
-
-    <div class="card">
-      <small>GPU Initialization</small>
-      <div class="metric" id="gpuInitTime">--</div>
-    </div>
-
-    <div class="card">
-      <small>GPU Device</small>
-      <div class="metric" style="font-size:13px" id="benchmarkDevice">--</div>
-    </div>
-
-    <div class="card">
-      <small>Benchmark Status</small>
-      <div class="metric" style="font-size:17px" id="benchmarkStatus">WAITING</div>
-    </div>
-
+  <div class="grid">
+    <div class="card"><small>Successful Tests</small><div class="metric" id="benchmarkPassed">--</div></div>
+    <div class="card"><small>GPU Initialization</small><div class="metric" id="gpuInitTime">--</div></div>
+    <div class="card"><small>GPU Device</small><div class="metric" style="font-size:13px" id="benchmarkDevice">--</div></div>
+    <div class="card"><small>Benchmark Status</small><div class="metric" style="font-size:15px" id="benchmarkStatus">WAITING</div></div>
   </div>
 
-  <div class="result" style="margin-top:18px">
+  <div class="result">
     <h3>CPU vs GPU Execution Time</h3>
-
     <div class="chart-legend">
-      <span>
-        <span class="legend-dot" style="background:#36e6a0"></span>
-        CPU execution time
-      </span>
-      <span>
-        <span class="legend-dot" style="background:#35a7ff"></span>
-        GPU execution time
-      </span>
+      <span><span class="legend-dot" style="background:#42e6a4"></span>CPU execution time</span>
+      <span><span class="legend-dot" style="background:#35a7ff"></span>GPU execution time</span>
     </div>
-
-    <div id="benchmarkChart" class="benchmark-chart">
-      Click Run Benchmark to load actual results.
-    </div>
+    <div id="benchmarkChart" class="benchmark-chart">Click Run Benchmark to load actual results.</div>
   </div>
 
-  
-<div style="overflow-x:auto;margin-top:20px">
-  <table class="benchmark-table">
-    <thead>
-      <tr>
-        <th>DNA Length</th>
-        <th>CPU Average (ms)</th>
-        <th>CPU Median (ms)</th>
-        <th>CPU Min (ms)</th>
-        <th>CPU Max (ms)</th>
-        <th>GPU Average (ms)</th>
-        <th>GPU Median (ms)</th>
-        <th>GPU Min (ms)</th>
-        <th>GPU Max (ms)</th>
-        <th>Speedup</th>
-        <th>Validation</th>
-      </tr>
-    </thead>
-
-    <tbody id="benchmarkRows">
-      <tr>
-        <td colspan="11">No benchmark results loaded.</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-
-  <div class="benchmark-note" id="benchmarkConclusion">
-    Benchmark results have not been loaded yet.
+  <div class="table-wrap">
+    <table class="benchmark-table">
+      <thead>
+        <tr>
+          <th>DNA Length</th><th>CPU Average</th><th>CPU Median</th>
+          <th>CPU Min</th><th>CPU Max</th><th>GPU Average</th>
+          <th>GPU Median</th><th>GPU Min</th><th>GPU Max</th>
+          <th>Speedup</th><th>Validation</th>
+        </tr>
+      </thead>
+      <tbody id="benchmarkRows">
+        <tr><td colspan="11">No benchmark results loaded.</td></tr>
+      </tbody>
+    </table>
   </div>
-
+  <div class="benchmark-note" id="benchmarkConclusion">Benchmark results have not been loaded yet.</div>
 </section>
 
 </main>
@@ -591,624 +301,475 @@ footer {
 </footer>
 
 <script>
+const API = "http://127.0.0.1:5000";
 
-const API = "https://geneweaver.onrender.com";
-
-// PROGRESS MONITOR
-
-function setProgress(value, message) {
-  document.getElementById("progressBar").style.width = value + "%";
-  document.getElementById("progressText").textContent = message;
+function setProgress(value,message) {
+  document.getElementById("progressBar").style.width=value+"%";
+  document.getElementById("progressText").textContent=message;
 }
 
-// API REQUEST
-
-async function apiRequest(endpoint, options = {}) {
-  const response = await fetch(API + endpoint, options);
-
+async function apiRequest(endpoint,options={}) {
+  const response=await fetch(API+endpoint,options);
   let data;
+  try { data=await response.json(); }
+  catch { throw new Error("Backend returned an invalid response."); }
 
-  try {
-    data = await response.json();
-  } catch {
-    throw new Error("Backend returned an invalid response.");
+  if(!response.ok || data.success===false) {
+    throw new Error(data.error || data.message || "Backend request failed.");
   }
-
-  if (!response.ok || data.success === false) {
-    throw new Error(
-      data.error || data.message || "Backend request failed."
-    );
-  }
-
   return data;
 }
 
-function showError(element, message) {
-  element.textContent = message;
-  element.className = "result bad";
+function showError(element,message) {
+  element.textContent=message;
+  element.className="result bad";
 }
 
-function showResult(element, message) {
-  element.textContent = message;
-  element.className = "result";
+function showResult(element,message) {
+  element.textContent=message;
+  element.className="result";
 }
 
 function updateProcessingTime(data) {
-  if (data.processing_time_ms !== undefined) {
-    document.getElementById("processingTime").textContent =
-      Number(data.processing_time_ms).toFixed(3) + " ms";
+  if(data.processing_time_ms!==undefined) {
+    document.getElementById("processingTime").textContent=
+      Number(data.processing_time_ms).toFixed(3)+" ms";
+  } else if(data.execution_time_ms!==undefined) {
+    document.getElementById("processingTime").textContent=
+      Number(data.execution_time_ms).toFixed(3)+" ms";
   }
 }
 
-// 01 - DNA ANALYSIS
-
+// 01 DNA ANALYSIS
 async function analyzeDNA() {
-  const sequence = document.getElementById("sequence").value.trim().toUpperCase();
-  const result = document.getElementById("dnaResult");
-  const pam = document.getElementById("pamResult");
+  const sequence=document.getElementById("sequence").value.trim().toUpperCase();
+  const output=document.getElementById("dnaResult");
+  const pam=document.getElementById("pamResult");
 
-  if (!sequence) {
-    showError(result, "Please enter a DNA sequence.");
+  if(!sequence) {
+    showError(output,"Please enter a DNA sequence.");
     return;
   }
 
   try {
-    setProgress(20, "Connecting to Python backend...");
-    document.getElementById("validationStatus").textContent = "Processing";
+    setProgress(20,"Connecting to Python backend...");
+    document.getElementById("validationStatus").textContent="Processing";
 
-    const data = await apiRequest("/api/analyze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ sequence: sequence })
+    const data=await apiRequest("/api/analyze",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({sequence})
     });
 
-    
+    const pamSites=Array.isArray(data.pam_sites)?data.pam_sites:[];
+    const total=sequence.length;
+    const counts={
+      A:(sequence.match(/A/g)||[]).length,
+      T:(sequence.match(/T/g)||[]).length,
+      G:(sequence.match(/G/g)||[]).length,
+      C:(sequence.match(/C/g)||[]).length
+    };
 
-const pamSites = Array.isArray(data.pam_sites)
-    ? data.pam_sites
-    : [];
+    const gcContent=((counts.G+counts.C)/total)*100;
+    const baseReport=["A","T","G","C"].map(base=>{
+      return base+": "+counts[base]+" ("+
+        ((counts[base]/total)*100).toFixed(2)+"%)";
+    }).join("\n");
 
-const total = sequence.length;
+    const report=
+      "DNA VALIDATION PASSED\n\n"+
+      "Sequence Length: "+data.length+" base pairs\n\n"+
+      "BASE COMPOSITION\n"+baseReport+"\n\n"+
+      "GC CONTENT: "+gcContent.toFixed(2)+"%\n\n"+
+      "PAM Sites Detected: "+pamSites.length;
 
-const counts = {
-    A: (sequence.match(/A/g) || []).length,
-    T: (sequence.match(/T/g) || []).length,
-    G: (sequence.match(/G/g) || []).length,
-    C: (sequence.match(/C/g) || []).length
-};
+    showResult(output,report);
 
-const gcContent =
-    ((counts.G + counts.C) / total) * 100;
-
-const baseReport = ["A", "T", "G", "C"].map(base => {
-    const percentage = (counts[base] / total) * 100;
-    return base + ": " + counts[base] +
-        " (" + percentage.toFixed(2) + "%)";
-}).join("\n");
-
-let report =
-    "DNA VALIDATION PASSED\n\n" +
-    "Sequence Length: " + data.length + " base pairs\n\n" +
-    "BASE COMPOSITION\n" + baseReport + "\n\n" +
-    "GC CONTENT: " + gcContent.toFixed(2) + "%\n\n" +
-    "PAM Sites Detected: " + pamSites.length;
-
-showResult(result, report);
-
-
-if (pamSites.length > 0) {
-    const pamReport =
-        pamSites.length + " PAM sites detected\n" +
-        pamSites.map(site =>
-            "Position " + site.position + ": " + site.pam
-        ).join("\n");
-
-    showResult(pam, pamReport);
-} else {
-    showResult(pam, "No NGG PAM sites found.");
-}
-
-
-    document.getElementById("validationStatus").textContent = "Passed";
-    updateProcessingTime(data);
-
-    setProgress(100, "Python DNA analysis completed");
-
-  } catch (error) {
-    showError(result, error.message);
-    document.getElementById("validationStatus").textContent = "Failed";
-    setProgress(0, "DNA analysis failed");
-  }
-}
-
-// 02 - FASTA PARSER
-
-async function loadFASTA() {
-  const file = document.getElementById("fastaFile").files[0];
-  const output = document.getElementById("fastaResult");
-
-  if (!file) {
-    showError(output, "Please select a FASTA file.");
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("file", file);
-
-  try {
-    setProgress(20, "Uploading FASTA file to Python backend...");
-
-    const data = await apiRequest("/api/fasta", {
-      method: "POST",
-      body: formData
-    });
-
-    setProgress(75, "Processing genome records...");
-
-    
-const records = Array.isArray(data.records) ? data.records : [];
-
-const totalBases = records.reduce(
-    (total, record) => total + record.sequence.length,
-    0
-);
-
-const totalGC = records.reduce((total, record) => {
-    const sequence = record.sequence.toUpperCase();
-    return total + (sequence.match(/[GC]/g) || []).length;
-}, 0);
-
-const gcPercentage = totalBases > 0
-    ? (totalGC / totalBases) * 100
-    : 0;
-
-let report =
-    "FASTA PARSING COMPLETED\n" +
-    "File: " + file.name + "\n" +
-    "Records: " + data.record_count + "\n" +
-    "Total bases: " + totalBases + "\n" +
-    "GC percentage: " + gcPercentage.toFixed(2) + "%\n\n";
-
-records.forEach((record, index) => {
-    const sequence = record.sequence.toUpperCase();
-    const length = sequence.length;
-    const gcCount = (sequence.match(/[GC]/g) || []).length;
-    const recordGC = length > 0 ? (gcCount / length) * 100 : 0;
-
-    report +=
-        "Record " + (index + 1) + ": " + record.header + "\n" +
-        "Length: " + length + " base pairs\n" +
-        "GC percentage: " + recordGC.toFixed(2) + "%\n\n";
-});
-
-
-    showResult(output, report);
-    setProgress(100, "Python FASTA parsing completed");
-
-  } catch (error) {
-    showError(output, error.message);
-    setProgress(0, "FASTA parsing failed");
-  }
-}
-
-// 03 - CPU ALIGNMENT
-
-
-async function runAlignment() {
-  const a = document.getElementById("seq1").value.trim().toUpperCase();
-  const b = document.getElementById("seq2").value.trim().toUpperCase();
-  const output = document.getElementById("cpuAlignmentResult");
-
-  if (!a || !b) {
-    showError(output, "Enter two DNA sequences.");
-    return;
-  }
-
-  try {
-    setProgress(20, "Sending sequences to Python CPU engine...");
-    document.getElementById("alignmentEngine").textContent = "Python CPU";
-
-    const data = await apiRequest("/api/align", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        sequence1: a,
-        sequence2: b
-      })
-    });
-
-    const result = data.result;
-
-    if (!Array.isArray(result) || result.length < 3) {
-      throw new Error("Invalid alignment result from Python backend.");
+    if(pamSites.length>0) {
+      showResult(pam,pamSites.length+" PAM sites detected\n"+
+        pamSites.map(site=>"Position "+site.position+": "+site.pam).join("\n"));
+    } else {
+      showResult(pam,"No NGG PAM sites found.");
     }
 
-    const report =
-      "NEEDLEMAN-WUNSCH PYTHON ALIGNMENT\n" +
-      "Sequence 1: " + result[0] + "\n" +
-      "Sequence 2: " + result[1] + "\n" +
-      "Alignment score: " + result[2] + "\n" +
-      "Execution time: " + data.execution_time_ms + " ms\n" +
-      "Backend: " + data.algorithm;
-
-    showResult(output, report);
+    document.getElementById("validationStatus").textContent="Passed";
+    document.getElementById("validationStatus").className="good";
     updateProcessingTime(data);
+    setProgress(100,"Python DNA analysis completed");
 
-    setProgress(100, "Python CPU alignment completed");
-
-  } catch (error) {
-    showError(output, error.message);
-    setProgress(0, "CPU alignment failed");
+  } catch(error) {
+    showError(output,error.message);
+    document.getElementById("validationStatus").textContent="Failed";
+    document.getElementById("validationStatus").className="bad";
+    setProgress(0,"DNA analysis failed");
   }
 }
 
+// 02 FASTA PARSER
+async function loadFASTA() {
+  const file=document.getElementById("fastaFile").files[0];
+  const output=document.getElementById("fastaResult");
 
-  
+  if(!file) {
+    showError(output,"Please select a FASTA file.");
+    return;
+  }
 
- // GPU STATUS
+  const formData=new FormData();
+  formData.append("file",file);
 
+  try {
+    setProgress(20,"Uploading FASTA file...");
+    const data=await apiRequest("/api/fasta",{
+      method:"POST",
+      body:formData
+    });
+
+    const records=Array.isArray(data.records)?data.records:[];
+    const totalBases=records.reduce((sum,r)=>sum+r.sequence.length,0);
+    const totalGC=records.reduce((sum,r)=>{
+      return sum+(r.sequence.match(/[GC]/gi)||[]).length;
+    },0);
+    const gc=totalBases?(totalGC/totalBases)*100:0;
+
+    let report=
+      "FASTA PARSING COMPLETED\n"+
+      "File: "+file.name+"\n"+
+      "Records: "+data.record_count+"\n"+
+      "Total bases: "+totalBases+"\n"+
+      "GC percentage: "+gc.toFixed(2)+"%\n\n";
+
+    records.forEach((record,index)=>{
+      const sequence=record.sequence.toUpperCase();
+      const length=sequence.length;
+      const gcCount=(sequence.match(/[GC]/g)||[]).length;
+      const recordGC=length?(gcCount/length)*100:0;
+      report+="Record "+(index+1)+": "+record.header+"\n"+
+        "Length: "+length+" base pairs\n"+
+        "GC percentage: "+recordGC.toFixed(2)+"%\n\n";
+    });
+
+    showResult(output,report);
+    setProgress(100,"FASTA parsing completed");
+
+  } catch(error) {
+    showError(output,error.message);
+    setProgress(0,"FASTA parsing failed");
+  }
+}
+
+// 03 CPU ALIGNMENT
+async function runAlignment() {
+  const a=document.getElementById("seq1").value.trim().toUpperCase();
+  const b=document.getElementById("seq2").value.trim().toUpperCase();
+  const output=document.getElementById("cpuAlignmentResult");
+
+  if(!a||!b) {
+    showError(output,"Enter two DNA sequences.");
+    return;
+  }
+
+  try {
+    setProgress(20,"Running Python CPU alignment...");
+    document.getElementById("alignmentEngine").textContent="Python CPU";
+
+    const data=await apiRequest("/api/align",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({sequence1:a,sequence2:b})
+    });
+
+    const result=data.result;
+    if(!Array.isArray(result)||result.length<3) {
+      throw new Error("Invalid CPU alignment response.");
+    }
+
+    const report=
+      "NEEDLEMAN-WUNSCH PYTHON ALIGNMENT\n"+
+      "Sequence 1: "+result[0]+"\n"+
+      "Sequence 2: "+result[1]+"\n"+
+      "Alignment score: "+result[2]+"\n"+
+      "Execution time: "+data.execution_time_ms+" ms\n"+
+      "Backend: "+(data.algorithm||"Python CPU");
+
+    showResult(output,report);
+    updateProcessingTime(data);
+    setProgress(100,"CPU alignment completed");
+
+  } catch(error) {
+    showError(output,error.message);
+    setProgress(0,"CPU alignment failed");
+  }
+}
+
+// GPU STATUS
 async function checkGPUStatus() {
   try {
-    const data = await apiRequest("/api/gpu-status");
+    const data=await apiRequest("/api/gpu-status");
+    const header=document.getElementById("headerStatus");
+    const gpuDevice=document.getElementById("gpuDevice");
 
-    const header = document.getElementById("headerStatus");
-    const gpuDevice = document.getElementById("gpuDevice");
-    const progressText = document.getElementById("progressText");
+    header.textContent="● PYTHON BACKEND ONLINE";
+    header.style.color="var(--green)";
 
-    header.textContent = "â— PYTHON BACKEND ONLINE";
-    header.className = "status";
+    if(data.available===true) {
+      const deviceNames=Array.isArray(data.devices)
+        ?data.devices.map(device=>device.name||device).join(", ")
+        :(data.device||"GPU detected");
 
-    if (data.available === true) {
-      const deviceNames = Array.isArray(data.devices)
-        ? data.devices.map(device => device.name || device).join(", ")
-        : (data.device || "GPU detected");
-
-      gpuDevice.textContent = deviceNames;
-      gpuDevice.className = "good";
-
-      progressText.textContent = "GPU detected: " + deviceNames;
-
+      gpuDevice.textContent=deviceNames;
+      gpuDevice.className="good";
+      document.getElementById("progressText").textContent=
+        "GPU detected: "+deviceNames;
     } else {
-      gpuDevice.textContent = "CPU Fallback";
-      gpuDevice.className = "good";
-
-      progressText.textContent =
-        data.device || "GPU unavailable. CPU processing is active.";
+      gpuDevice.textContent="Unavailable — CPU fallback";
+      gpuDevice.className="bad";
+      document.getElementById("progressText").textContent=
+        data.device||"GPU unavailable. CPU processing is active.";
     }
 
-  } catch (error) {
-    document.getElementById("headerStatus").textContent =
-      "â— BACKEND CONNECTION FAILED";
-
-    document.getElementById("gpuDevice").textContent = "Connection failed";
-    document.getElementById("progressText").textContent = error.message;
+  } catch(error) {
+    document.getElementById("headerStatus").textContent=
+      "● BACKEND CONNECTION FAILED";
+    document.getElementById("headerStatus").style.color="var(--red)";
+    document.getElementById("gpuDevice").textContent="Connection failed";
+    document.getElementById("progressText").textContent=error.message;
   }
 }
 
-
-
 // GPU ALIGNMENT
-
 async function runGPUAlignment() {
-  const a = document.getElementById("seq1").value.trim().toUpperCase();
-  const b = document.getElementById("seq2").value.trim().toUpperCase();
-  const output = document.getElementById("gpuAlignmentResult");
+  const a=document.getElementById("seq1").value.trim().toUpperCase();
+  const b=document.getElementById("seq2").value.trim().toUpperCase();
+  const output=document.getElementById("gpuAlignmentResult");
 
-  if (!a || !b) {
-    showError(output, "Enter two DNA sequences.");
+  if(!a||!b) {
+    showError(output,"Enter two DNA sequences.");
     return;
   }
 
   try {
-    setProgress(20, "Running Intel OpenCL GPU alignment...");
-    document.getElementById("alignmentEngine").textContent = "OpenCL GPU";
+    setProgress(20,"Running Intel OpenCL GPU alignment...");
+    document.getElementById("alignmentEngine").textContent="OpenCL GPU requested";
 
-    const data = await apiRequest("/api/gpu-align", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        sequence1: a,
-        sequence2: b
-      })
+    const data=await apiRequest("/api/gpu-align",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({sequence1:a,sequence2:b})
     });
 
-    const report =
-      "GPU GLOBAL ALIGNMENT\n" +
-      "Sequence 1: " + data.aligned_sequence1 + "\n" +
-      "Sequence 2: " + data.aligned_sequence2 + "\n" +
-      "Alignment score: " + data.alignment_score + "\n" +
-      "GPU device: " + data.device + "\n" +
-      "Backend: " + data.backend + "\n" +
-      "Traceback: " + data.traceback;
+    // Backend returns alignment data inside the result array.
+    const result=data.result;
+    if(!Array.isArray(result)||result.length<3) {
+      throw new Error("Invalid GPU alignment result.");
+    }
 
-    showResult(output, report);
+    const deviceName=result[3]||data.device||"OpenCL device";
+    const report=
+      "NEEDLEMAN-WUNSCH GPU ALIGNMENT\n"+
+      "Sequence 1: "+result[0]+"\n"+
+      "Sequence 2: "+result[1]+"\n"+
+      "Alignment score: "+result[2]+"\n"+
+      "GPU device: "+deviceName+"\n"+
+      "Execution time: "+data.execution_time_ms+" ms\n"+
+      "Backend: "+(data.algorithm||"Intel OpenCL");
+
+    showResult(output,report);
+    document.getElementById("alignmentEngine").textContent="Intel OpenCL GPU";
+    document.getElementById("gpuDevice").textContent=deviceName;
+    document.getElementById("gpuDevice").className="good";
     updateProcessingTime(data);
+    setProgress(100,"GPU alignment completed");
 
-    setProgress(100, "GPU alignment completed");
-
-  } catch (error) {
-    showError(output, error.message);
-    setProgress(0, "GPU alignment failed");
+  } catch(error) {
+    showError(output,error.message);
+    document.getElementById("alignmentEngine").textContent="GPU unavailable / request failed";
+    setProgress(0,"GPU alignment failed");
   }
 }
 
-// 07 - CPU VS GPU BENCHMARK
-
-
-
+// 07 CPU VS GPU BENCHMARK
 async function runBenchmark() {
+  const button=document.getElementById("benchmarkButton");
+  const status=document.getElementById("benchmarkStatus");
+  const passed=document.getElementById("benchmarkPassed");
+  const initTime=document.getElementById("gpuInitTime");
+  const device=document.getElementById("benchmarkDevice");
+  const chart=document.getElementById("benchmarkChart");
+  const rows=document.getElementById("benchmarkRows");
+  const conclusion=document.getElementById("benchmarkConclusion");
 
-  const button = document.getElementById("benchmarkButton");
-  const status = document.getElementById("benchmarkStatus");
-  const passed = document.getElementById("benchmarkPassed");
-  const initTime = document.getElementById("gpuInitTime");
-  const device = document.getElementById("benchmarkDevice");
-  const chart = document.getElementById("benchmarkChart");
-  const rows = document.getElementById("benchmarkRows");
-  const conclusion = document.getElementById("benchmarkConclusion");
-
-  button.disabled = true;
-  button.textContent = "Running Benchmark...";
-  status.textContent = "RUNNING";
-  status.style.color = "var(--cyan)";
-
-  chart.textContent = "Connecting to Python benchmark API...";
-  rows.innerHTML = "";
-  conclusion.textContent = "Running benchmark...";
-
-  setProgress(20, "Starting benchmark...");
+  button.disabled=true;
+  button.textContent="Running Benchmark...";
+  status.textContent="RUNNING";
+  chart.textContent="Connecting to benchmark API...";
+  rows.innerHTML="";
+  conclusion.textContent="Running benchmark...";
+  setProgress(20,"Starting benchmark...");
 
   try {
+    const data=await apiRequest("/api/benchmark");
 
-    const data = await apiRequest("/api/benchmark");
-
-    if (!Array.isArray(data.results) || data.results.length === 0) {
+    if(!Array.isArray(data.results)||data.results.length===0) {
       throw new Error("Benchmark returned no results.");
     }
 
-    const gpuAvailable = data.gpu_available === true;
+    const gpuAvailable=data.gpu_available===true;
 
-    passed.textContent = gpuAvailable
-      ? data.successful_tests + "/" + data.total_tests
-      : "GPU N/A (" + data.skipped_tests + " skipped)";
+    passed.textContent=gpuAvailable
+      ?data.successful_tests+"/"+data.total_tests
+      :"GPU N/A ("+(data.skipped_tests||0)+" skipped)";
 
-    initTime.textContent =
-      data.gpu_initialization_ms == null
-        ? "N/A"
-        : Number(data.gpu_initialization_ms).toFixed(2) + " ms";
+    initTime.textContent=data.gpu_initialization_ms==null
+      ?"N/A":Number(data.gpu_initialization_ms).toFixed(2)+" ms";
 
-    device.textContent = data.gpu_device || "Unavailable";
+    device.textContent=data.gpu_device||"Unavailable";
 
-    if (data.benchmark_status === "GPU_UNAVAILABLE_CPU_ONLY") {
-      status.textContent = "CPU ONLY - GPU UNAVAILABLE";
-      status.style.color = "var(--cyan)";
-    } else if (data.failed_tests > 0) {
-      status.textContent = "CHECK RESULTS";
-      status.style.color = "var(--red)";
+    if(data.benchmark_status==="GPU_UNAVAILABLE_CPU_ONLY") {
+      status.textContent="CPU ONLY - GPU UNAVAILABLE";
+      status.style.color="var(--cyan)";
+    } else if(data.failed_tests>0) {
+      status.textContent="CHECK RESULTS";
+      status.style.color="var(--red)";
     } else {
-      status.textContent = "GPU VALIDATED";
-      status.style.color = "var(--green)";
+      status.textContent="GPU VALIDATED";
+      status.style.color="var(--green)";
     }
 
-    // BUILD 11-COLUMN RESULTS TABLE
+    // Results table
+    data.results.forEach(result=>{
+      const row=document.createElement("tr");
+      const fmt=value=>value==null?"N/A":Number(value).toFixed(4);
+      const speed=value=>value==null?"N/A":Number(value).toFixed(2)+"x";
 
-    rows.innerHTML = "";
-
-    data.results.forEach(result => {
-
-      const row = document.createElement("tr");
-
-      const formatTime = value =>
-        value == null ? "N/A" : Number(value).toFixed(4);
-
-      const formatSpeedup = value =>
-        value == null ? "N/A" : Number(value).toFixed(2) + "x";
-
-      const values = [
+      const values=[
         result.sequence_length,
-        formatTime(result.cpu_time_ms),
-        formatTime(result.cpu_median_ms),
-        formatTime(result.cpu_min_ms),
-        formatTime(result.cpu_max_ms),
-        formatTime(result.gpu_time_ms),
-        formatTime(result.gpu_median_ms),
-        formatTime(result.gpu_min_ms),
-        formatTime(result.gpu_max_ms),
-        formatSpeedup(result.speedup),
-        result.validation || "UNKNOWN"
+        fmt(result.cpu_time_ms),
+        fmt(result.cpu_median_ms),
+        fmt(result.cpu_min_ms),
+        fmt(result.cpu_max_ms),
+        fmt(result.gpu_time_ms),
+        fmt(result.gpu_median_ms),
+        fmt(result.gpu_min_ms),
+        fmt(result.gpu_max_ms),
+        speed(result.speedup),
+        result.validation||"UNKNOWN"
       ];
 
-      values.forEach((value, index) => {
-
-        const cell = document.createElement("td");
-        cell.textContent = value;
-
-        if (index === 9 && result.speedup != null) {
-          cell.className =
-            Number(result.speedup) > 1
-              ? "good"
-              : Number(result.speedup) < 1
-              ? "bad"
-              : "";
+      values.forEach((value,index)=>{
+        const cell=document.createElement("td");
+        cell.textContent=value;
+        if(index===9&&result.speedup!=null) {
+          cell.className=Number(result.speedup)>1?"good":"bad";
         }
-
-        if (index === 10) {
-          cell.className =
-            result.validation === "PASS"
-              ? "good"
-              : result.validation === "SKIPPED"
-              ? ""
-              : "bad";
+        if(index===10) {
+          cell.className=result.validation==="PASS"?"good":
+            result.validation==="SKIPPED"?"":"bad";
         }
-
         row.appendChild(cell);
       });
-
       rows.appendChild(row);
     });
 
-    // BUILD MEDIAN EXECUTION TIME CHART
+    // Benchmark charts
+    chart.innerHTML="";
 
-    chart.innerHTML = "";
+    data.results.forEach(result=>{
+      const cpu=Number(result.cpu_median_ms??result.cpu_time_ms);
+      const gpu=result.gpu_median_ms==null?null:Number(result.gpu_median_ms);
+      const maximum=Math.max(cpu,gpu||0,0.001);
 
-    data.results.forEach(result => {
+      const group=document.createElement("div");
+      group.className="benchmark-group";
 
-      const cpu = Number(result.cpu_median_ms ?? result.cpu_time_ms);
-
-      const gpu = result.gpu_median_ms == null
-        ? null
-        : Number(result.gpu_median_ms);
-
-      const maximum = Math.max(cpu, gpu ?? 0, 0.001);
-
-      const group = document.createElement("div");
-      group.className = "benchmark-group";
-
-      const heading = document.createElement("div");
-      heading.className = "benchmark-heading";
-      heading.textContent =
-        "DNA Sequence Length: " + result.sequence_length +
+      const heading=document.createElement("div");
+      heading.className="benchmark-heading";
+      heading.textContent="DNA Sequence Length: "+result.sequence_length+
         " | Median Execution Time";
-
       group.appendChild(heading);
 
-      const barItems = [
-        { label: "CPU Median", value: cpu, className: "cpu-bar" },
-        { label: "GPU Median", value: gpu, className: "gpu-bar" }
-      ];
+      [
+        {label:"CPU Median",value:cpu,className:"cpu-bar"},
+        {label:"GPU Median",value:gpu,className:"gpu-bar"}
+      ].forEach(item=>{
+        const label=document.createElement("div");
+        label.className="bar-label";
 
-      barItems.forEach(item => {
+        const name=document.createElement("span");
+        name.textContent=item.label;
 
-        const label = document.createElement("div");
-        label.className = "bar-label";
+        const value=document.createElement("span");
+        value.textContent=item.value==null
+          ?"N/A (GPU unavailable)":item.value.toFixed(4)+" ms";
 
-        const name = document.createElement("span");
-        name.textContent = item.label;
+        label.append(name,value);
+        group.appendChild(label);
 
-        const value = document.createElement("span");
-        value.textContent =
-          item.value == null
-            ? "N/A (GPU unavailable)"
-            : item.value.toFixed(4) + " ms";
+        const track=document.createElement("div");
+        track.className="bar-track";
 
-        label.appendChild(name);
-        label.appendChild(value);
-
-        const track = document.createElement("div");
-        track.className = "bar-track";
-
-        if (item.value != null) {
-
-          const bar = document.createElement("div");
-          bar.className = "bar-fill " + item.className;
-
-          bar.style.width =
-            Math.max(1, item.value / maximum * 100) + "%";
-
+        if(item.value!=null) {
+          const bar=document.createElement("div");
+          bar.className="bar-fill "+item.className;
+          bar.style.width=Math.max(1,item.value/maximum*100)+"%";
           track.appendChild(bar);
         }
-
-        group.appendChild(label);
         group.appendChild(track);
       });
 
       chart.appendChild(group);
     });
 
-    // PERFORMANCE SUMMARY
-
-    let summary =
-      "BENCHMARK SUMMARY\n" +
-      "Algorithm: " + data.algorithm + "\n" +
-      "GPU device: " + data.gpu_device + "\n" +
-      "CPU tests completed: " + data.total_tests + "\n" +
-      "GPU tests skipped: " + (data.skipped_tests ?? 0) + "\n" +
-      "GPU validations passed: " + data.successful_tests + "\n" +
-      "Failed tests: " + data.failed_tests + "\n" +
-      "Repetitions per sequence size: " + data.repetitions + "\n" +
-      "Statistics: Average, median, minimum and maximum.\n" +
+    let summary=
+      "BENCHMARK SUMMARY\n"+
+      "Algorithm: "+data.algorithm+"\n"+
+      "GPU device: "+data.gpu_device+"\n"+
+      "CPU tests completed: "+data.total_tests+"\n"+
+      "GPU tests skipped: "+(data.skipped_tests||0)+"\n"+
+      "GPU validations passed: "+data.successful_tests+"\n"+
+      "Failed tests: "+data.failed_tests+"\n"+
+      "Repetitions per sequence size: "+data.repetitions+"\n"+
+      "Statistics: Average, median, minimum and maximum.\n"+
       "Speedup: CPU median divided by GPU median.\n";
 
-    if (!gpuAvailable) {
+    summary+=gpuAvailable
+      ?"\nCPU and GPU benchmark completed."
+      :"\nCPU-only benchmark completed successfully.\n"+
+       "GPU validation skipped because OpenCL is unavailable.\n"+
+       "GPU timings and speedup are unavailable.";
 
-      summary +=
-        "\nCPU-only benchmark completed successfully.\n" +
-        "GPU validation was skipped because OpenCL is unavailable.\n" +
-        "CPU timings are available; GPU timings and speedup are unavailable.";
+    conclusion.textContent=summary;
+    setProgress(100,gpuAvailable
+      ?"CPU and GPU benchmark completed"
+      :"CPU-only benchmark completed; GPU validation skipped");
 
-    } else {
-
-      summary +=
-        "\nCPU and GPU benchmark completed.\n" +
-        "Compare median execution times and speedup for each sequence size.";
-    }
-
-    conclusion.textContent = summary;
-
-    setProgress(
-      100,
-      gpuAvailable
-        ? "CPU and GPU benchmark completed"
-        : "CPU-only benchmark completed; GPU validation skipped"
-    );
-
-  } catch (error) {
-
-    status.textContent = "FAILED";
-    status.style.color = "var(--red)";
-
-    chart.textContent = error.message;
-
-    conclusion.textContent =
-      "Benchmark could not be completed. Check the Flask backend.";
-
-    showError(
-      conclusion,
-      error.message
-    );
-
-    setProgress(0, "Benchmark failed");
-
+  } catch(error) {
+    status.textContent="FAILED";
+    status.style.color="var(--red)";
+    chart.textContent=error.message;
+    showError(conclusion,error.message);
+    setProgress(0,"Benchmark failed");
   } finally {
-
-    button.disabled = false;
-    button.textContent = "Run Benchmark";
-
+    button.disabled=false;
+    button.textContent="Run Benchmark";
   }
 }
 
-
-
 // CLEAR RESULTS
-
 function clearResults() {
-
-  document.getElementById("sequence").value = "";
-
-  showResult(
-    document.getElementById("dnaResult"),
-    "Waiting for DNA sequence..."
-  );
-
-  showResult(
-    document.getElementById("pamResult"),
-    "Waiting for sequence analysis..."
-  );
-
-  document.getElementById("validationStatus").textContent = "Waiting";
-  document.getElementById("processingTime").textContent = "--";
-
-  setProgress(0, "Waiting for operation...");
+  document.getElementById("sequence").value="";
+  showResult(document.getElementById("dnaResult"),"Waiting for DNA sequence...");
+  showResult(document.getElementById("pamResult"),"Waiting for sequence analysis...");
+  document.getElementById("validationStatus").textContent="Waiting";
+  document.getElementById("processingTime").textContent="--";
+  setProgress(0,"Waiting for operation...");
 }
 
-// INITIAL BACKEND CONNECTION
-
-document.addEventListener("DOMContentLoaded", function() {
+// INITIAL CONNECTION
+document.addEventListener("DOMContentLoaded",function() {
   checkGPUStatus();
 });
-
 </script>
 
 </body>
 </html>
-
