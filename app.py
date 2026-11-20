@@ -139,10 +139,9 @@ def analyze():
     if not sequence:
         return error_response("Please provide a DNA sequence.")
 
-    validation = validate_dna(sequence)
-
-    if validation is False:
-        return error_response("Invalid DNA sequence.")
+    valid, validation_message = validate_dna(sequence)
+    if not valid:
+        return error_response(validation_message)
 
     length = len(sequence)
 
