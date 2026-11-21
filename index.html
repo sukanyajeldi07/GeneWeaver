@@ -4,154 +4,252 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GeneWeaver | Genomic Control Center</title>
+<title>GeneWeaver | Genomic Intelligence Platform</title>
 
 <style>
 :root {
-  --bg:#070d18;
-  --panel:#101b2d;
-  --panel2:#15243a;
-  --line:#263c59;
-  --cyan:#43dff2;
+  --bg:#080e19;
+  --surface:#101a2b;
+  --surface2:#142238;
+  --surface3:#0b1525;
+  --line:#253953;
+  --cyan:#42dff2;
+  --teal:#36e0b0;
   --green:#42e6a4;
   --red:#ff7188;
   --text:#edf5ff;
   --muted:#91a7c2;
+  --blue:#559cff;
 }
-* {box-sizing:border-box}
-body {
-  margin:0;
-  color:var(--text);
-  font-family:Arial,sans-serif;
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;color:var(--text);
+  font-family:Inter,Segoe UI,Arial,sans-serif;
   background:
-    radial-gradient(circle at 10% 0%,#10283a 0,transparent 30%),
-    radial-gradient(circle at 90% 5%,#1b1a3b 0,transparent 25%),
+    radial-gradient(ellipse at 10% 0%,#10283b 0,transparent 32%),
+    radial-gradient(ellipse at 90% 0%,#1a1b3b 0,transparent 28%),
     var(--bg);
 }
-header {
-  position:sticky;top:0;z-index:10;
-  padding:19px 5%;
-  display:flex;justify-content:space-between;
-  align-items:center;gap:15px;flex-wrap:wrap;
-  background:rgba(7,13,24,.95);
+header{
+  position:sticky;top:0;z-index:20;
+  min-height:76px;padding:14px 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:20px;flex-wrap:wrap;
+  background:rgba(8,14,25,.94);
   border-bottom:1px solid var(--line);
-  backdrop-filter:blur(12px);
+  backdrop-filter:blur(16px);
 }
-.logo {font-size:23px;font-weight:bold;color:var(--cyan);letter-spacing:2px}
-.logo span {color:white}
-.status {
-  color:var(--green);font-size:12px;font-weight:bold;
-  padding:8px 13px;border-radius:25px;
-  border:1px solid #28634f;background:#10291f;
+.brand{display:flex;align-items:center;gap:13px}
+.brand-icon{
+  width:42px;height:42px;border-radius:12px;
+  display:grid;place-items:center;
+  color:var(--cyan);font-size:23px;font-weight:bold;
+  border:1px solid #2c7180;
+  background:linear-gradient(145deg,#12364a,#102238);
 }
-main {max-width:1450px;margin:auto;padding:28px 5%}
-.hero {
-  padding:28px;border:1px solid var(--line);
-  border-radius:16px;margin-bottom:25px;
-  background:linear-gradient(120deg,#142b43,#10172d);
+.logo{font-size:20px;font-weight:800;letter-spacing:2px}
+.logo span{color:var(--cyan)}
+.brand-sub{font-size:9px;color:var(--muted);letter-spacing:1.5px;margin-top:4px}
+.header-right{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.backend-status{
+  color:var(--green);font-size:11px;font-weight:700;
+  padding:9px 13px;border:1px solid #28634f;
+  border-radius:30px;background:#10291f;
 }
-.hero-tag {
+.nav{display:flex;gap:17px;flex-wrap:wrap}
+.nav a{
+  color:var(--muted);font-size:12px;text-decoration:none;
+  transition:.2s;
+}
+.nav a:hover{color:var(--cyan)}
+main{max-width:1500px;margin:auto;padding:30px 5% 45px}
+.hero{
+  position:relative;overflow:hidden;
+  padding:34px;border:1px solid var(--line);
+  border-radius:18px;margin-bottom:23px;
+  background:
+    radial-gradient(circle at 85% 30%,#17485b55,transparent 28%),
+    linear-gradient(115deg,#142d46,#11182e 75%);
+}
+.hero:after{
+  content:"DNA / GENOMIC COMPUTING";
+  position:absolute;right:30px;bottom:20px;
+  color:#ffffff0b;font-size:clamp(20px,4vw,46px);
+  font-weight:900;letter-spacing:4px;pointer-events:none;
+}
+.eyebrow{
   color:var(--cyan);font-size:10px;
-  font-weight:bold;letter-spacing:2px;
+  font-weight:800;letter-spacing:2.5px;
 }
-.hero h1 {font-size:clamp(25px,3vw,36px);margin:12px 0}
-.hero p,.muted {color:var(--muted);line-height:1.7}
-.grid {
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:15px;margin:22px 0;
+.hero h1{font-size:clamp(27px,4vw,39px);margin:13px 0 9px}
+.hero p{color:var(--muted);font-size:14px;line-height:1.8;margin:0;max-width:700px}
+.hero-bottom{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}
+.tag{
+  padding:7px 11px;border:1px solid #36516c;
+  border-radius:6px;color:#c4d8ed;font-size:10px;
+  background:#0b1a2b99;
 }
-.card,.panel {
+.section-label{
+  color:var(--muted);font-size:10px;font-weight:800;
+  letter-spacing:2px;margin:26px 0 12px;
+}
+.grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;margin:14px 0 24px;
+}
+.card,.panel{
   background:linear-gradient(145deg,#14243a,#0e192b);
   border:1px solid var(--line);
-  border-radius:13px;padding:20px;
-  box-shadow:0 10px 25px #0003;
+  border-radius:13px;
+  box-shadow:0 12px 30px #0002;
 }
-.card {border-left:3px solid var(--cyan)}
-.card small {
-  color:var(--muted);font-size:10px;
-  font-weight:bold;letter-spacing:1px;
-  text-transform:uppercase;
+.card{padding:19px;position:relative;overflow:hidden}
+.card:after{
+  content:"";position:absolute;right:-20px;top:-25px;
+  width:90px;height:90px;border-radius:50%;
+  background:#42dff20b;
 }
-.metric {font-size:25px;color:var(--cyan);font-weight:bold;margin-top:12px}
-.layout {display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
-.panel {margin-bottom:18px}
-h2 {
-  font-size:17px;margin:0 0 18px;
-  padding-bottom:13px;border-bottom:1px solid var(--line);
+.card small{
+  display:block;color:var(--muted);font-size:10px;
+  font-weight:800;letter-spacing:1.2px;text-transform:uppercase;
 }
-h3 {font-size:14px;margin:18px 0 10px}
-label {display:block;color:var(--muted);font-size:13px;margin:13px 0 8px}
-textarea,input {
+.metric{font-size:25px;color:var(--cyan);font-weight:800;margin-top:13px}
+.metric-sub{font-size:10px;color:var(--muted);margin-top:7px}
+.layout{
+  display:grid;grid-template-columns:minmax(0,1.65fr) minmax(270px,.85fr);
+  gap:18px;align-items:start;
+}
+.panel{padding:21px;margin-bottom:17px;min-width:0}
+.panel-heading{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;flex-wrap:wrap;margin-bottom:18px;
+}
+.panel h2{
+  font-size:15px;margin:0;padding:0;
+  border:0;letter-spacing:.2px;
+}
+.panel-number{font-size:10px;color:var(--cyan);font-weight:800;letter-spacing:1px}
+.panel-description{font-size:12px;color:var(--muted);line-height:1.7;margin:-7px 0 15px}
+.panel-divider{height:1px;background:var(--line);margin:15px 0}
+label{display:block;color:#b6c8dc;font-size:12px;margin:14px 0 8px}
+textarea,input{
   width:100%;background:#081323;color:white;
-  border:1px solid var(--line);border-radius:7px;
-  padding:13px;font-family:monospace;outline:none;
+  border:1px solid var(--line);border-radius:8px;
+  padding:13px;font-family:Consolas,monospace;font-size:13px;
+  outline:none;transition:.2s;
 }
-textarea {min-height:110px;resize:vertical}
-input:focus,textarea:focus {border-color:var(--cyan);box-shadow:0 0 0 3px #43dff21a}
-button {
-  background:var(--cyan);color:#07111e;
-  border:0;border-radius:7px;padding:12px 17px;
-  font-weight:bold;cursor:pointer;margin:13px 6px 0 0;
+textarea{min-height:115px;resize:vertical}
+input:focus,textarea:focus{
+  border-color:var(--cyan);box-shadow:0 0 0 3px #43dff21a;
 }
-button:hover {filter:brightness(1.1);transform:translateY(-1px)}
-button:disabled {opacity:.5;cursor:not-allowed}
-.secondary {background:var(--panel2);color:white;border:1px solid var(--line)}
-.result {
+input[type=file]{font-family:Arial,sans-serif;font-size:12px}
+button{
+  background:linear-gradient(110deg,var(--cyan),#65e9d0);
+  color:#07111e;border:0;border-radius:7px;
+  padding:11px 16px;font-weight:800;font-size:12px;
+  cursor:pointer;margin:12px 6px 0 0;transition:.2s;
+}
+button:hover{filter:brightness(1.1);transform:translateY(-1px)}
+button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.secondary{
+  background:#172940;color:#d9e8f7;
+  border:1px solid #304660;
+}
+.result{
   background:#081323;border:1px solid var(--line);
-  border-radius:8px;padding:14px;margin-top:15px;
-  min-height:65px;white-space:pre-wrap;
-  overflow-wrap:anywhere;font:13px/1.8 monospace;
+  border-radius:8px;padding:14px;margin-top:14px;
+  min-height:62px;white-space:pre-wrap;
+  overflow-wrap:anywhere;font:12px/1.8 Consolas,monospace;
+  color:#c9d9e9;
 }
-.good {color:var(--green)}
-.bad {color:var(--red)}
-.cyan {color:var(--cyan)}
-.info-row {
+.good{color:var(--green)!important}
+.bad{color:var(--red)!important}
+.cyan{color:var(--cyan)}
+.muted{color:var(--muted);font-size:12px;line-height:1.7}
+.info-row{
   display:flex;justify-content:space-between;gap:12px;
   padding:12px 0;border-bottom:1px solid var(--line);
-  font-size:13px;
+  font-size:12px;
 }
-.info-row span:last-child {text-align:right;font-weight:bold}
-.progress {height:9px;background:#263b55;border-radius:20px;overflow:hidden;margin-top:14px}
-.progress div {
+.info-row:last-child{border-bottom:0}
+.info-row span:first-child{color:var(--muted)}
+.info-row span:last-child{text-align:right;font-weight:700;overflow-wrap:anywhere}
+.status-pill{
+  display:inline-block;border:1px solid #2d6856;
+  background:#10291f;color:var(--green);
+  padding:5px 9px;border-radius:20px;font-size:10px;font-weight:800;
+}
+.progress{height:8px;background:#263b55;border-radius:20px;overflow:hidden;margin-top:12px}
+.progress div{
   height:100%;width:0%;
-  background:linear-gradient(90deg,var(--cyan),var(--green));
+  background:linear-gradient(90deg,var(--cyan),var(--teal));
   transition:width .3s;
 }
-.benchmark-chart {display:flex;flex-direction:column;gap:18px;margin-top:15px}
-.benchmark-group {
+.monitor-icon{
+  width:34px;height:34px;display:grid;place-items:center;
+  border:1px solid #31516b;border-radius:9px;
+  color:var(--cyan);background:#10243a;font-size:15px;
+}
+.monitor-title{display:flex;align-items:center;gap:10px}
+.benchmark-chart{display:flex;flex-direction:column;gap:15px;margin-top:15px}
+.benchmark-group{
   padding:15px;border:1px solid var(--line);
   border-radius:9px;background:#071321;
 }
-.benchmark-heading {color:var(--cyan);font-weight:bold;font-size:13px;margin-bottom:12px}
-.bar-label {display:flex;justify-content:space-between;gap:10px;font-size:12px;margin:9px 0 5px}
-.bar-track {height:13px;background:#26364c;border-radius:20px;overflow:hidden}
-.bar-fill {height:100%;min-width:2px;border-radius:20px}
-.cpu-bar {background:var(--green)}
-.gpu-bar {background:#35a7ff}
-.chart-legend {display:flex;gap:20px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:12px 0}
-.legend-dot {display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
-.table-wrap {overflow-x:auto;margin-top:20px}
-.benchmark-table {width:100%;min-width:950px;border-collapse:collapse;font-size:12px}
-.benchmark-table th,.benchmark-table td {padding:12px 9px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
-.benchmark-table th {color:var(--cyan);background:#14243a}
-.benchmark-note {color:var(--muted);font-size:12px;line-height:1.7;margin-top:15px}
-footer {
-  text-align:center;padding:25px;
+.benchmark-heading{color:var(--cyan);font-weight:bold;font-size:12px;margin-bottom:12px}
+.bar-label{display:flex;justify-content:space-between;gap:10px;font-size:11px;margin:9px 0 5px}
+.bar-track{height:12px;background:#26364c;border-radius:20px;overflow:hidden}
+.bar-fill{height:100%;min-width:2px;border-radius:20px}
+.cpu-bar{background:var(--green)}
+.gpu-bar{background:var(--blue)}
+.chart-legend{display:flex;gap:20px;flex-wrap:wrap;color:var(--muted);font-size:11px;margin:12px 0}
+.legend-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+.table-wrap{overflow-x:auto;margin-top:20px}
+.benchmark-table{width:100%;min-width:950px;border-collapse:collapse;font-size:11px}
+.benchmark-table th,.benchmark-table td{
+  padding:12px 9px;border-bottom:1px solid var(--line);
+  text-align:left;white-space:nowrap;
+}
+.benchmark-table th{color:var(--cyan);background:#14243a}
+.benchmark-note{color:var(--muted);font-size:11px;line-height:1.8;margin-top:15px}
+.side-panel{position:sticky;top:95px}
+.feature-item{
+  display:flex;gap:11px;padding:12px 0;
+  border-bottom:1px solid var(--line);
+}
+.feature-item:last-child{border-bottom:0}
+.feature-symbol{
+  flex:0 0 30px;height:30px;border-radius:8px;
+  background:#15334a;color:var(--cyan);
+  display:grid;place-items:center;font-size:13px;
+}
+.feature-item strong{display:block;font-size:12px;margin-bottom:4px}
+.feature-item small{display:block;color:var(--muted);font-size:10px;line-height:1.5}
+footer{
+  text-align:center;padding:25px 5%;
   color:var(--muted);border-top:1px solid var(--line);
-  font-size:12px;line-height:1.8;
+  font-size:11px;line-height:1.9;
 }
-@media(max-width:850px) {
-  .grid {grid-template-columns:repeat(2,1fr)}
-  .layout {grid-template-columns:1fr}
-  header {position:relative}
+@media(max-width:1000px){
+  .layout{grid-template-columns:1fr}
+  .side-panel{position:static}
 }
-@media(max-width:480px) {
-  main {padding:18px 4%}
-  .grid {grid-template-columns:1fr}
-  .hero {padding:20px}
-  .hero h1 {font-size:25px}
-  .card,.panel {padding:16px}
-  button {width:100%}
+@media(max-width:760px){
+  header{position:relative;padding:14px 4%}
+  .header-right{width:100%;justify-content:space-between}
+  .nav{gap:12px}
+  main{padding:22px 4%}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero{padding:23px}
+  .hero:after{display:none}
+}
+@media(max-width:460px){
+  .grid{grid-template-columns:1fr}
+  .panel{padding:16px}
+  .hero h1{font-size:26px}
+  button{width:100%;margin-right:0}
+  .nav{width:100%;justify-content:space-between}
 }
 </style>
 </head>
@@ -159,118 +257,254 @@ footer {
 <body>
 
 <header>
-  <div class="logo">GENE<span>WEAVER</span></div>
-  <div class="status" id="headerStatus">● CONNECTING TO PYTHON BACKEND...</div>
+  <div class="brand">
+    <div class="brand-icon">G</div>
+    <div>
+      <div class="logo">GENE<span>WEAVER</span></div>
+      <div class="brand-sub">GENOMIC INTELLIGENCE PLATFORM</div>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <nav class="nav">
+      <a href="#overview">Overview</a>
+      <a href="#analysis">Analysis</a>
+      <a href="#alignment">Alignment</a>
+      <a href="#benchmarkSection">Performance</a>
+    </nav>
+    <div class="backend-status" id="headerStatus">● CONNECTING TO PYTHON BACKEND...</div>
+  </div>
 </header>
 
 <main>
 
-<section class="hero">
-  <div class="hero-tag">GENOMICS • SEQUENCE INTELLIGENCE • HIGH PERFORMANCE COMPUTING</div>
+<section class="hero" id="overview">
+  <div class="eyebrow">GENOMICS • SEQUENCE INTELLIGENCE • HIGH PERFORMANCE COMPUTING</div>
   <h1>Genomic Control Center</h1>
-  <p>GPU-Assisted CRISPR Alignment Engine | Bioinformatics & High Performance Computing</p>
+  <p>
+    An integrated bioinformatics workspace for DNA sequence analysis,
+    FASTA processing, global sequence alignment and CRISPR PAM detection.
+  </p>
+  <div class="hero-bottom">
+    <span class="tag">PYTHON FLASK BACKEND</span>
+    <span class="tag">NEEDLEMAN–WUNSCH</span>
+    <span class="tag">OPENCL GPU SUPPORT</span>
+    <span class="tag">CRISPR / SP CAS9</span>
+  </div>
 </section>
+
+<div class="section-label">PLATFORM OVERVIEW / SYSTEM SNAPSHOT</div>
 
 <section class="grid">
   <div class="card">
     <small>Analysis Engine</small>
     <div class="metric">READY</div>
+    <div class="metric-sub">Sequence analysis workspace</div>
   </div>
   <div class="card">
-    <small>Sequence Analyzer</small>
+    <small>Sequence Technology</small>
     <div class="metric">DNA</div>
+    <div class="metric-sub">A • T • G • C validation</div>
   </div>
   <div class="card">
-    <small>Alignment Method</small>
+    <small>Alignment Methods</small>
     <div class="metric">CPU + GPU</div>
+    <div class="metric-sub">GPU subject to availability</div>
   </div>
   <div class="card">
-    <small>GPU Technology</small>
+    <small>GPU Framework</small>
     <div class="metric">OpenCL</div>
+    <div class="metric-sub">Hardware availability checked by backend</div>
   </div>
 </section>
 
-<div class="layout">
+<div class="section-label">GENOMIC WORKSPACE / ANALYSIS MODULES</div>
+
+<div class="layout" id="analysis">
+
 <div>
+  <section class="panel">
+    <div class="panel-heading">
+      <div class="monitor-title">
+        <div class="monitor-icon">01</div>
+        <h2>DNA Sequence Analyzer</h2>
+      </div>
+      <span class="panel-number">SEQUENCE ANALYSIS</span>
+    </div>
+    <p class="panel-description">Validate a DNA sequence and calculate nucleotide composition, GC percentage and detected PAM sites.</p>
 
-<section class="panel">
-  <h2>01 / DNA Sequence Analyzer</h2>
-  <label>Enter DNA sequence (A, T, G, C)</label>
-  <textarea id="sequence" placeholder="Example: ATGCGTACGGATGCGT"></textarea>
-  <button onclick="analyzeDNA()">Analyze Sequence</button>
-  <button class="secondary" onclick="clearResults()">Clear</button>
-  <div class="result" id="dnaResult">Waiting for DNA sequence...</div>
-</section>
+    <label for="sequence">Enter DNA sequence (A, T, G, C)</label>
+    <textarea id="sequence" placeholder="Example: ATGCGTACGGATGCGT"></textarea>
+    <button onclick="analyzeDNA()">Analyze Sequence</button>
+    <button class="secondary" onclick="clearResults()">Clear Results</button>
+    <div class="result" id="dnaResult">Waiting for DNA sequence...</div>
+  </section>
 
-<section class="panel">
-  <h2>02 / FASTA Genome Parser</h2>
-  <label>Upload FASTA file (.fasta or .fa)</label>
-  <input type="file" id="fastaFile" accept=".fasta,.fa,.fna,.txt">
-  <button onclick="loadFASTA()">Process FASTA</button>
-  <div class="result" id="fastaResult">No FASTA file selected.</div>
-</section>
+  <section class="panel">
+    <div class="panel-heading">
+      <div class="monitor-title">
+        <div class="monitor-icon">02</div>
+        <h2>FASTA Genome Parser</h2>
+      </div>
+      <span class="panel-number">FILE PROCESSING</span>
+    </div>
+    <p class="panel-description">Upload a FASTA file to inspect sequence records, base counts and GC composition.</p>
 
-<section class="panel">
-  <h2>03 / Global Sequence Alignment</h2>
-  <label>DNA Sequence 1</label>
-  <input id="seq1" placeholder="ATGCGTAC">
-  <label>DNA Sequence 2</label>
-  <input id="seq2" placeholder="ATGCTAC">
-  <button onclick="runAlignment()">Run CPU Alignment</button>
-  <button onclick="runGPUAlignment()">Run GPU Alignment</button>
-  <h3>CPU Alignment Result</h3>
-  <div class="result" id="cpuAlignmentResult">CPU results will appear here.</div>
-  <h3>GPU Alignment Result</h3>
-  <div class="result" id="gpuAlignmentResult">GPU results will appear here.</div>
-</section>
+    <label for="fastaFile">Upload FASTA file (.fasta, .fa, .fna or .txt)</label>
+    <input type="file" id="fastaFile" accept=".fasta,.fa,.fna,.txt">
+    <button onclick="loadFASTA()">Process FASTA File</button>
+    <div class="result" id="fastaResult">No FASTA file selected.</div>
+  </section>
 
-<section class="panel">
-  <h2>04 / PAM Site Detection</h2>
-  <p class="muted">SpCas9 PAM motif: N-G-G</p>
-  <div class="result" id="pamResult">Waiting for sequence analysis...</div>
-</section>
+  <section class="panel" id="alignment">
+    <div class="panel-heading">
+      <div class="monitor-title">
+        <div class="monitor-icon">03</div>
+        <h2>Global Sequence Alignment</h2>
+      </div>
+      <span class="panel-number">NEEDLEMAN–WUNSCH</span>
+    </div>
+    <p class="panel-description">Compare two DNA sequences using the Python CPU engine or request OpenCL GPU alignment.</p>
 
-<section class="panel">
-  <h2>05 / Processing Monitor</h2>
-  <div class="info-row"><span>Interface</span><span class="good">Online</span></div>
-  <div class="info-row"><span>DNA Validation</span><span id="validationStatus">Waiting</span></div>
-  <div class="info-row"><span>Alignment Engine</span><span id="alignmentEngine">CPU Baseline</span></div>
-  <div class="info-row"><span>GPU Device</span><span id="gpuDevice">Checking...</span></div>
-  <div class="info-row"><span>Last Processing Time</span><span id="processingTime">--</span></div>
-  <p class="muted">Analysis progress</p>
-  <div class="progress"><div id="progressBar"></div></div>
-  <p id="progressText" class="muted">Waiting for operation...</p>
-</section>
+    <label for="seq1">DNA Sequence 1</label>
+    <input id="seq1" placeholder="ATGCGTAC">
+    <label for="seq2">DNA Sequence 2</label>
+    <input id="seq2" placeholder="ATGCTAC">
+    <button onclick="runAlignment()">Run CPU Alignment</button>
+    <button onclick="runGPUAlignment()" class="secondary">Run GPU Alignment</button>
 
-<section class="panel">
-  <h2>06 / Project Information</h2>
-  <div class="info-row"><span>Domain</span><span>Bioinformatics</span></div>
-  <div class="info-row"><span>Algorithm</span><span>Needleman-Wunsch</span></div>
-  <div class="info-row"><span>GPU Technology</span><span>OpenCL</span></div>
-  <div class="info-row"><span>Sequence Format</span><span>FASTA</span></div>
-  <div class="info-row"><span>PAM Motif</span><span>NGG</span></div>
-</section>
+    <div class="panel-divider"></div>
+    <h3>CPU Alignment Result</h3>
+    <div class="result" id="cpuAlignmentResult">CPU results will appear here.</div>
+    <h3>GPU Alignment Result</h3>
+    <div class="result" id="gpuAlignmentResult">GPU results will appear here.</div>
+  </section>
 
+  <section class="panel">
+    <div class="panel-heading">
+      <div class="monitor-title">
+        <div class="monitor-icon">04</div>
+        <h2>CRISPR PAM Site Detection</h2>
+      </div>
+      <span class="panel-number">SPCAS9 / NGG</span>
+    </div>
+    <p class="panel-description">Identify the SpCas9 NGG PAM motif in the submitted DNA sequence.</p>
+    <div class="result" id="pamResult">Waiting for sequence analysis...</div>
+  </section>
 </div>
+
+<aside class="side-panel">
+
+  <section class="panel">
+    <div class="panel-heading">
+      <div class="monitor-title">
+        <div class="monitor-icon">05</div>
+        <h2>Processing Monitor</h2>
+      </div>
+      <span class="status-pill">LIVE STATUS</span>
+    </div>
+
+    <div class="info-row"><span>Interface</span><span class="good">Online</span></div>
+    <div class="info-row"><span>DNA Validation</span><span id="validationStatus">Waiting</span></div>
+    <div class="info-row"><span>Alignment Engine</span><span id="alignmentEngine">CPU Baseline</span></div>
+    <div class="info-row"><span>GPU Device</span><span id="gpuDevice">Checking...</span></div>
+    <div class="info-row"><span>Last Processing Time</span><span id="processingTime">--</span></div>
+
+    <div class="panel-divider"></div>
+    <div class="info-row"><span>Operation Progress</span><span id="progressPercent">0%</span></div>
+    <div class="progress"><div id="progressBar"></div></div>
+    <p id="progressText" class="muted">Waiting for operation...</p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-heading">
+      <div class="monitor-title">
+        <div class="monitor-icon">06</div>
+        <h2>Project Architecture</h2>
+      </div>
+    </div>
+
+    <div class="info-row"><span>Domain</span><span>Bioinformatics</span></div>
+    <div class="info-row"><span>Backend</span><span>Python / Flask</span></div>
+    <div class="info-row"><span>Algorithm</span><span>Needleman–Wunsch</span></div>
+    <div class="info-row"><span>GPU Framework</span><span>OpenCL</span></div>
+    <div class="info-row"><span>File Format</span><span>FASTA</span></div>
+    <div class="info-row"><span>PAM Motif</span><span>NGG</span></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-heading">
+      <div class="monitor-title">
+        <div class="monitor-icon">i</div>
+        <h2>Platform Capabilities</h2>
+      </div>
+    </div>
+
+    <div class="feature-item">
+      <div class="feature-symbol">A</div>
+      <div><strong>DNA Validation</strong><small>Nucleotide validation and composition analysis</small></div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-symbol">F</div>
+      <div><strong>FASTA Processing</strong><small>Multi-record sequence parsing</small></div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-symbol">↔</div>
+      <div><strong>Sequence Alignment</strong><small>Global alignment with CPU and GPU request paths</small></div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-symbol">⌕</div>
+      <div><strong>PAM Detection</strong><small>SpCas9 NGG motif identification</small></div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-symbol">↗</div>
+      <div><strong>Performance Testing</strong><small>Execution time and benchmark reporting</small></div>
+    </div>
+  </section>
+
+</aside>
 </div>
 
 <section class="panel" id="benchmarkSection">
-  <h2>07 / CPU vs GPU Performance Benchmark</h2>
-  <p class="muted">Needleman-Wunsch Algorithm | OpenCL GPU when available</p>
-  <button id="benchmarkButton" onclick="runBenchmark()">Run Benchmark</button>
+  <div class="panel-heading">
+    <div class="monitor-title">
+      <div class="monitor-icon">07</div>
+      <h2>CPU vs GPU Performance Benchmark</h2>
+    </div>
+    <span class="panel-number">PERFORMANCE LAB</span>
+  </div>
+  <p class="panel-description">Needleman–Wunsch algorithm benchmark. GPU measurements are shown only when an OpenCL device is available.</p>
+
+  <button id="benchmarkButton" onclick="runBenchmark()">Run Performance Benchmark</button>
 
   <div class="grid">
-    <div class="card"><small>Successful Tests</small><div class="metric" id="benchmarkPassed">--</div></div>
-    <div class="card"><small>GPU Initialization</small><div class="metric" id="gpuInitTime">--</div></div>
-    <div class="card"><small>GPU Device</small><div class="metric" style="font-size:13px" id="benchmarkDevice">--</div></div>
-    <div class="card"><small>Benchmark Status</small><div class="metric" style="font-size:15px" id="benchmarkStatus">WAITING</div></div>
+    <div class="card">
+      <small>Successful Tests</small>
+      <div class="metric" id="benchmarkPassed">--</div>
+      <div class="metric-sub">Backend-reported results</div>
+    </div>
+    <div class="card">
+      <small>GPU Initialization</small>
+      <div class="metric" id="gpuInitTime">--</div>
+      <div class="metric-sub">Initialization duration</div>
+    </div>
+    <div class="card">
+      <small>GPU Device</small>
+      <div class="metric" style="font-size:13px" id="benchmarkDevice">--</div>
+      <div class="metric-sub">Detected hardware</div>
+    </div>
+    <div class="card">
+      <small>Benchmark Status</small>
+      <div class="metric" style="font-size:14px" id="benchmarkStatus">WAITING</div>
+      <div class="metric-sub">Execution state</div>
+    </div>
   </div>
 
   <div class="result">
-    <h3>CPU vs GPU Execution Time</h3>
+    <h3>Execution Time Comparison</h3>
     <div class="chart-legend">
       <span><span class="legend-dot" style="background:#42e6a4"></span>CPU execution time</span>
-      <span><span class="legend-dot" style="background:#35a7ff"></span>GPU execution time</span>
+      <span><span class="legend-dot" style="background:#559cff"></span>GPU execution time</span>
     </div>
     <div id="benchmarkChart" class="benchmark-chart">Click Run Benchmark to load actual results.</div>
   </div>
@@ -296,8 +530,9 @@ footer {
 </main>
 
 <footer>
-  GENEWEAVER | GPU-ASSISTED CRISPR ALIGNMENT ENGINE<br>
-  Python Flask Backend | Intel OpenCL GPU Integration
+  <strong>GENEWEAVER</strong> | GENOMIC INTELLIGENCE PLATFORM<br>
+  Python Flask Backend • Needleman–Wunsch Alignment • OpenCL GPU Integration<br>
+  <span>GPU performance is reported only when supported hardware is detected.</span>
 </footer>
 
 <script>
@@ -305,6 +540,7 @@ const API = "https://geneweaver.onrender.com";
 
 function setProgress(value,message) {
   document.getElementById("progressBar").style.width=value+"%";
+  document.getElementById("progressPercent").textContent=value+"%";
   document.getElementById("progressText").textContent=message;
 }
 
@@ -558,7 +794,6 @@ async function runGPUAlignment() {
       body:JSON.stringify({sequence1:a,sequence2:b})
     });
 
-    // Backend returns alignment data inside the result array.
     const result=data.result;
     if(!Array.isArray(result)||result.length<3) {
       throw new Error("Invalid GPU alignment result.");
@@ -636,7 +871,6 @@ async function runBenchmark() {
       status.style.color="var(--green)";
     }
 
-    // Results table
     data.results.forEach(result=>{
       const row=document.createElement("tr");
       const fmt=value=>value==null?"N/A":Number(value).toFixed(4);
@@ -671,7 +905,6 @@ async function runBenchmark() {
       rows.appendChild(row);
     });
 
-    // Benchmark charts
     chart.innerHTML="";
 
     data.results.forEach(result=>{
@@ -751,7 +984,7 @@ async function runBenchmark() {
     setProgress(0,"Benchmark failed");
   } finally {
     button.disabled=false;
-    button.textContent="Run Benchmark";
+    button.textContent="Run Performance Benchmark";
   }
 }
 
@@ -761,6 +994,7 @@ function clearResults() {
   showResult(document.getElementById("dnaResult"),"Waiting for DNA sequence...");
   showResult(document.getElementById("pamResult"),"Waiting for sequence analysis...");
   document.getElementById("validationStatus").textContent="Waiting";
+  document.getElementById("validationStatus").className="";
   document.getElementById("processingTime").textContent="--";
   setProgress(0,"Waiting for operation...");
 }
